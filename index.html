@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Milano Trip — Juli 2025</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F5F0E8;
+  --card: #FFFDF9;
+  --text: #1C1A16;
+  --muted: #8A8070;
+  --border: #E8E2D6;
+  --accent: #C84B2F;
+  --green: #2A6B4A;
+  --blue: #1A4A7A;
+  --amber: #8A5A10;
+  --pink: #8A2A4A;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  min-height: 100vh;
+  padding-bottom: 48px;
+}
+.hero {
+  background: var(--text);
+  color: var(--bg);
+  padding: 40px 24px 32px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: 'MILANO';
+  position: absolute;
+  font-family: 'DM Serif Display', serif;
+  font-size: 140px;
+  color: rgba(255,255,255,0.04);
+  bottom: -20px;
+  right: -10px;
+  white-space: nowrap;
+  pointer-events: none;
+  line-height: 1;
+}
+.hero-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: rgba(245,240,232,.5);
+  margin-bottom: 12px;
+}
+.hero-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 42px;
+  line-height: 1.05;
+  margin-bottom: 6px;
+}
+.hero-title em { font-style: italic; color: #E8A070; }
+.hero-sub {
+  font-size: 13px;
+  color: rgba(245,240,232,.6);
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+.hero-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(245,240,232,.2);
+  color: rgba(245,240,232,.8);
+}
+
+.alert {
+  margin: 20px 16px 0;
+  background: #FFF3E0;
+  border-left: 3px solid #E8A030;
+  border-radius: 0 10px 10px 0;
+  padding: 12px 14px;
+  font-size: 12px;
+  color: #6A4010;
+  line-height: 1.7;
+}
+.alert strong { font-weight: 500; }
+
+.section-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 28px 20px 10px;
+}
+
+.day {
+  margin: 0 16px 12px;
+  background: var(--card);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.day-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+.day-header:hover { background: rgba(0,0,0,.015); }
+.day-num {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Serif Display', serif;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.n1 { background: #E8F5EE; color: #1A5A36; }
+.n2 { background: #E8F0FA; color: #1A3A6A; }
+.n3 { background: #FAE8F0; color: #6A1A3A; }
+.n4 { background: #FAF0E0; color: #6A4010; }
+.n5 { background: #EAF5E0; color: #2A5010; }
+.n6 { background: #F0EDE8; color: #4A4038; }
+.day-meta { flex: 1 }
+.day-name { font-size: 15px; font-weight: 500; line-height: 1.3; }
+.day-date { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.chevron {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--border);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: transform .25s, background .2s;
+}
+.chevron svg { width: 10px; height: 10px; fill: none; stroke: var(--muted); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform .25s; }
+.day.open .chevron { background: var(--text); }
+.day.open .chevron svg { stroke: var(--bg); transform: rotate(90deg); }
+
+.slots { display: none; border-top: 1px solid var(--border); }
+.day.open .slots { display: block; }
+
+.slot {
+  display: flex;
+  gap: 12px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+}
+.slot:last-child { border: none; }
+.slot-time {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--muted);
+  min-width: 56px;
+  padding-top: 3px;
+  flex-shrink: 0;
+  letter-spacing: .04em;
+}
+.slot-body { flex: 1; min-width: 0; }
+.slot-name { font-size: 14px; font-weight: 500; line-height: 1.4; }
+.slot-note { font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.55; }
+.badges { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 7px; }
+.badge {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.b-red { background: #FDE8E8; color: #8A1A1A; }
+.b-amber { background: #FDF0D8; color: #7A4A08; }
+.b-green { background: #E2F5E8; color: #1A5A2A; }
+.b-blue { background: #E2EEF8; color: #1A3A6A; }
+.b-pink { background: #F8E2EE; color: #6A1A3A; }
+.links { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+a.link-btn {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  color: var(--text);
+  text-decoration: none;
+  background: var(--bg);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: background .15s, border-color .15s;
+}
+a.link-btn:hover { background: var(--border); }
+a.link-btn.maps { border-color: #BDD4F0; background: #EEF4FC; color: #1A3A6A; }
+a.link-btn.book { border-color: #F0BDBD; background: #FCF0EE; color: #8A1A1A; }
+
+.book-section {
+  margin: 0 16px;
+  background: var(--card);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.book-section .section-label { padding: 16px 18px 12px; margin: 0; border-bottom: 1px solid var(--border); }
+.book-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 18px;
+  border-bottom: 1px solid var(--border);
+  text-decoration: none;
+  color: var(--text);
+  transition: background .15s;
+}
+.book-row:last-child { border: none; }
+.book-row:hover { background: rgba(0,0,0,.02); }
+.book-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+.book-info { flex: 1; }
+.book-info strong { font-size: 13px; font-weight: 500; display: block; }
+.book-info span { font-size: 11px; color: var(--muted); }
+.book-arr { font-size: 18px; color: var(--border); }
+
+footer {
+  text-align: center;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 32px;
+  letter-spacing: .05em;
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">Gruppenreise · 5 Personen</div>
+  <div class="hero-title">Milano<br><em>Juli 2025</em></div>
+  <div class="hero-sub">03. – 08. Juli &nbsp;·&nbsp; NH Collection CityLife<br>6 Tage · 2 Konzerte · Bars · Rooftops · Clubs</div>
+  <div class="hero-pills">
+    <span class="pill">Foo Fighters 05.07.</span>
+    <span class="pill">System of a Down 06.07.</span>
+    <span class="pill">Abflug 14:55 Uhr</span>
+  </div>
+</div>
+
+<div class="alert">
+  <strong>Wichtig:</strong> Anfang Juli ca. 34–36°C. Täglich Mittagspause 13–17 Uhr einplanen! Konzertabende: Metro nutzen, mind. 90 Min. früher losfahren. Kein Schatten vor Ort.
+</div>
+
+<div class="section-label">Tagesplan</div>
+
+<!-- TAG 1 -->
+<div class="day" id="d1">
+  <div class="day-header" onclick="tog('d1')">
+    <div class="day-num n1">1</div>
+    <div class="day-meta">
+      <div class="day-name">Ankunft &amp; Chinatown</div>
+      <div class="day-date">Donnerstag, 03. Juli</div>
+    </div>
+    <div class="chevron"><svg viewBox="0 0 12 12"><polyline points="4,2 8,6 4,10"/></svg></div>
+  </div>
+  <div class="slots">
+    <div class="slot">
+      <div class="slot-time">09:15</div>
+      <div class="slot-body">
+        <div class="slot-name">Ankunft — Hotel NH Collection CityLife</div>
+        <div class="slot-note">Check-in, Gepäck abgeben falls Zimmer noch nicht bereit</div>
+        <div class="links">
+          <a class="link-btn" href="https://www.nh-hotels.com/en/hotel/nh-collection-milano-citylife" target="_blank">Hotel</a>
+          <a class="link-btn maps" href="https://maps.google.com/?cid=16459654856201404266" target="_blank">Maps</a>
+        </div>
+      </div>
+    </div>
+    <div class="slot">
+      <div class="slot-time">11:00</div>
+      <div class="slot-body">
+        <div class="slot-name">Chinatown (Via Paolo Sarpi) + Cat Café</div>
+        <div class="slot-note">Street Food &amp; Shops. Cat Café: 5€ Mindestkonsum, nachmittags aktiver</div>
+        <div class="badges"><span class="badge b-amber">Hitze: Wasser mitnehmen!</span></div>
+        <div class="links">
+          <a class="link-btn" href="https://www.crazycatcafe.it/" target="_blank">Cat Café</a>
+          <a class="link-btn maps" href="https://maps.google.com/?cid=4157819568318733634" target="_blank">Maps</a>
+        </div>
+      </div>
+    </div>
+    <div class="slot">
+      <div class="slot-time">14:30</div>
+      <div class="slot-body">
+        <div class="slot-name">Castello Sforzesco &amp; Parco Sempione</div>
+        <div class="slot-note">Gratis Parkeintritt — ideal zum Abkühlen. Mo–So 07–19:30 Uhr</div>
+        <div class="links">
+          <a class="link-btn" href="https://www.milanocastello.it/" target="_blank">Website</a>
+          <a class="link-btn maps" href="https://maps.google.com/?cid=7302267279280095899" target="_blank">Maps</a>
+        </div>
+      </div>
+    </div>
+    <div class="slot">
+      <div class="slot-time">19:00</div>
+      <div class="slot-body">
+        <div class="slot-name">Terrazza Triennale — Aperitivo</div>
+        <div class="slot-note">Blick auf Parco Sempione &amp; Alpen. Di–So ab 18 Uhr</div>
+        <div class="badges"><span class="badge b-green">Neu: besser als Arco della Pace</span></div>
+        <div class="links">
+          <a class="link-btn" href="https://triennale.org/ristoranti/terrazza-triennale" target="_blank">Website</a>
+          <a class="link-btn maps" href="https://maps.google.com/?cid=2347345656614645793" target="_blank">Maps</a>
+        </div>
+      </div>
+    </div>
+    <div class="slot">
+      <div class="slot-time">21:30</div>
+      <div class="slot-body">
+        <div class="slot-name">Nottingham Forest — Cocktailbar</div>
+        <div class="slot-note">World's 50 Best Bars. Keine Reservierung möglich — früh ankommen! Di–Sa 19–02 Uhr</div>
+        <div class="badges"><span class="badge b-amber">Kein Reservierungssystem</span></div>
+        <div class="links">
+          <a class="link-btn" href="http://www.nottingham-forest.com/" target="_blank">Website</a>
+          <a class="link-btn maps" href="https://maps.google.com/?cid=7436253074413873312" target="_blank">Maps</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAG 2 -->
+<div class="day" id="d2">
+  <div class="day-header" onclick="tog('d2')">
+    <div class="day-num n2">2</div>
+    <div class="day-meta">
+      <div class="day-name">Duomo &amp; Sri Lankan Dinner</div>
+      <div class="day-date">Freitag, 04. Juli</div>
+    </div>
+    <div class="chevron"><svg viewBox="0 0 12 12"><polyline points="4,2 8,6 4,10"/></svg></div>
+  </div>
+  <div class="slots">
+    <div class="slot">
+      <div class="slot-time">08:30</div>
+      <div class="slot-body">
+        <div class="slot-name">Duomo di Milano + Rooftop</div>
+        <div class="slot-note">Früh = keine Schlange &amp; bestes Licht. Tickets unbedingt vorab buchen!</div>
+        <div class="badges"><span class="badge b-red">Tickets VORAB buchen — ausgebucht!</span></div>
+        <div class="links">
+          <a class="link-btn book" href="https://www.duomomilano.it/en/" target="_blank">Tickets buchen</a>
+          <a class="link-btn maps" href="https://maps.google.com/?cid=12357681832208772627" target="_blank">Maps</a>
+        </div>
+      </div>
+    </div>
+    <div class="slot">
+      <div class="slot-time">10:30</div>
+      <div class="slot-body">
+        <div class="slot-name">Galleria Vittorio Emanuele II</div>
+        <div class="slot-note">Gratis — Glaskuppel, Mosaike, Luxus-Boutiquen. Immer geöffnet</div>
+        <div class="links">
+          <a class="link-btn maps" href="https://maps.google.com/?cid=2813514643363451926" target="_blank">Maps</a>
+        </div>
+      </div>
+    </div>
+    <div class="slot">
+      <div class="slot-time">11:30</div>
+      <div class="slot-body">
+        <div class="slot-name">Camparino in Galleria</div>
+        <div class="slot-note">Negroni-Legende seit 1915 — World's 50 Best Bars. Mo–Sa 09:30–00 Uhr</div>
+        <div class="badges"><span class="badge b-green">Neu ergänzt — iconic!</span></div>
+        <div class="links">
+          <a class="link-btn" href="http://www.camparino.com/" target="_blank">Website</a>
+          <a class="link-btn maps" href="https://maps.google.com/?cid=12487426857985224575" target="_blank">Maps</a>
+        </div>
+      </div>
+    </div>
+    <div class="slot">
+      <div class="slot-time">13–17 Uhr</div>
+      <div class="slot-body">
+        <div class="slot-name">Hotel — Siesta &amp; Friseurtermin</div>
+        <div class="slot-note">Stärkste Tageshitze — Pflichtpause!</div>
+        <div class="badges"><span class="badge b-amber">35°C Pflichtpause</span></div>
+      </div>
+    </div>
+    <div class="slot">
+      <div class="slot-time">19:30</div>
+      <div class="slot-body">
+        <div class="slot-name">Serendib — Sri Lankan Restaurant</div>
+        <div class="slot-note">Michelin Bib Gourmand. Tasting Menu ca. 35€. Gruppe von 5: unbedingt reservieren!</div>
+        <div class="badges"><span class="badge b-red">Reservierung nötig!</span></div>
+        <div class="links">
+          <a class="link-btn book" href="https://www.serendibmilano.com/" target="_blank">Reservieren</a>
+          <a class="link-btn maps" href="https://maps.google.com/?cid=1596117629500349352" target="_blank">Maps</a>
+        </div>
+      </div>
+    </div>
+    <div class="slot">
+      <div class="slot-time">22:00</div>
+      <div class="slot-body">
+        <div class="slot-name">La Rinascente Rooftop (7. OG)</div>
+        <div class="slot-note">Direkte Duomo-Sicht bei Nacht. Bis Mitternacht geöffnet</div>
+        <div class="badges"><span class="badge b-green">Bester Nacht-Rooftop</span></div>
+        <div class="links">
+          <a class="link-btn" href="http://www.rinascente.it/" target="_blank">Website</a>
+          <a class="link-btn maps" href="https://maps.google.com/?cid=11611806535064570536" target="_blank">Maps</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAG 3 -->
+<div class="day" id="d3">
+  <div class="day-header" onclick="tog('d3')">
+    <div class="day-num n3">3</div>
+    <div class="day-meta">
+      <div class="day-name">Brera &amp; Foo Fighters</div>
+      <div class="day-date">Samstag, 05. Juli</div>
+    </div>
+    <div class="chevron"><svg viewBox="0 0 12 12"><polyline points="4,2 8,6 4,10"/></svg></div>
+  </div>
+  <div class="slots">
+    <div class="slot">
+      <div class="slot-time">09:30</div>
+      <div class="slot-body">
+        <div class="slot-name">Brera Viertel — Pinacoteca di Brera</div>
+        <div class="slot-note">Cafés, Boutiquen, Kunstgalerien. Di–So 08:30–18 Uhr</div>
+        <div class="links">
+          <a class="link-btn" href="https://pinacotecabrera.org/" target="_blank">Website</a>
+          <a class="link-btn maps" href="https://maps.google.com/?cid=1960889438820185910" target="_blank">Maps</a>
+        </div>
+      </div>
+    </div>
+    <div class="slot">
+      <div class="slot-time">13–17 Uhr</div>
+      <div class="slot-body">
+        <div class="slot-name">Hotel — Erholung für das Konzert</div>
+        <div class="slot-note">Leichte Kleidung, Wasser &amp; Powerbank einpacken!</div>
+        <div class="badges"><span class="badge b-amber">Konzert-Packliste!</span></div>
+      </div>
+    </div>
+    <div class="slot">
+      <div class="slot-time">17:30</div>
+      <div class="slot-body">
+        <div class="slot-name">FOO FIGHTERS — Ippodromo SNAI La Maura</div>
+        <div class="slot-note">Metro M1 → Haltestelle Uruguay → 15 Min. zu Fuß. Sa-Verkehr — früh losfahren! Kein Schatten vor Ort.</div>
+        <div class="badges"><span class="badge b-red">90 Min. früher abfahren!</span></div>
+        <div class="links">
+          <a class="link-btn" href="https://www.ticketone.it/" target="_blank">Tickets</a>
+          <a class="link-btn maps" href="https://maps.google.com/?cid=16175990574831006571" target="_blank">Maps</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAG 4 -->
+<div class="day" id="d4">
+  <div class="day-header" onclick="tog('d4')">
+    <div class="day-num n4">4</div>
+    <div class="day-meta">
+      <div class="day-name">Relax &amp; System of a Down</div>
+      <div class="day-date">Sonntag, 06. Juli</div>
+    </div>
+    <div class="chevron"><svg viewBox="0 0 12 12"><polyline points="4,2 8,6 4,10"/></svg></div>
+  </div>
+  <div class="slots">
+    <div class="slot">
+      <div class="slot-time">11:00</div>
+      <div class="slot-body">
+        <div class="slot-name">Brunch — Bobino Milano</div>
+        <div class="slot-note">Panorama-Terrasse an der Porta Genova. Öffnungszeiten auf Website prüfen</div>
+        <div class="links">
+          <a class="link-btn" href="https://bobino.it/" target="_blank">Website</a>
+          <a class="link-btn maps" href="https://maps.google.com/?cid=279820898617882067" target="_blank">Maps</a>
+        </div>
+      </div>
+    </div>
+    <div class="slot">
+      <div class="slot-time">15:00</div>
+      <div class="slot-body">
+        <div class="slot-name">Ceresio 7 — Pool Rooftop</div>
+        <div class="slot-note">Glamourösester Pool Mailands, 360° Skyline-Blick. Mo–So 12:30–15 &amp; 19:30–23 Uhr</div>
+        <div class="badges"><span class="badge b-red">Reservierung nötig!</span><span class="badge b-green">Neu ergänzt</span></div>
+        <div class="links">
+          <a class="link-btn book" href="https://www.ceresio7.com/en/milano/" target="_blank">Reservieren</a>
+          <a class="link-btn maps" href="https://maps.google.com/?cid=13896680527114500984" target="_blank">Maps</a>
+        </div>
+      </div>
+    </div>
+    <div class="slot">
+      <div class="slot-time">19:00</div>
+      <div class="slot-body">
+        <div class="slot-name">SYSTEM OF A DOWN — Ippodromo SNAI La Maura</div>
+        <div class="slot-note">Gleiche Location wie Foo Fighters. Metro M1 → Uruguay → zu Fuß</div>
+        <div class="badges"><span class="badge b-red">90 Min. früher abfahren!</span></div>
+        <div class="links">
+          <a class="link-btn" href="https://www.ticketone.it/" target="_blank">Tickets</a>
+          <a class="link-btn maps" href="https://maps.google.com/?cid=16175990574831006571" target="_blank">Maps</a>
+        </div>
+      </div>
+    </div>
+    <div class="slot">
+      <div class="slot-time">23:30</div>
+      <div class="slot-body">
+        <div class="slot-name">Gattopardo Milano — Club in alter Kirche</div>
+        <div class="slot-note">Kronleuchter, Pop &amp; House. Di–Sa ab 23:30 bis 05 Uhr. So möglicherweise geschlossen!</div>
+        <div class="badges"><span class="badge b-pink">Club</span><span class="badge b-amber">So-Öffnung prüfen!</span></div>
+        <div class="links">
+          <a class="link-btn" href="http://www.ilgattopardomilano.com/" target="_blank">Website</a>
+          <a class="link-btn maps" href="https://maps.google.com/?cid=9777570849613499470" target="_blank">Maps</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAG 5 -->
+<div class="day" id="d5">
+  <div class="day-header" onclick="tog('d5')">
+    <div class="day-num n5">5</div>
+    <div class="day-meta">
+      <div class="day-name">Navigli &amp; Grosse Clubnacht</div>
+      <div class="day-date">Montag, 07. Juli</div>
+    </div>
+    <div class="chevron"><svg viewBox="0 0 12 12"><polyline points="4,2 8,6 4,10"/></svg></div>
+  </div>
+  <div class="slots">
+    <div class="slot">
+      <div class="slot-time">Morgens</div>
+      <div class="slot-body">
+        <div class="slot-name">Shopping / Café / offene Punkte</div>
+        <div class="slot-note">Letzter freier Vormittag für eigene Wünsche</div>
+      </div>
+    </div>
+    <div class="slot">
+      <div class="slot-time">19:00</div>
+      <div class="slot-body">
+        <div class="slot-name">Mag Café — Navigli am Kanal</div>
+        <div class="slot-note">Beste Cocktailbar am Kanal, kreative Drinks + gratis Snacks. Mo–So ab 08 Uhr</div>
+        <div class="links">
+          <a class="link-btn" href="https://www.farmilygroup.com/" target="_blank">Website</a>
+          <a class="link-btn maps" href="https://maps.google.com/?cid=1854808282304548101" target="_blank">Maps</a>
+        </div>
+      </div>
+    </div>
+    <div class="slot">
+      <div class="slot-time">20:00</div>
+      <div class="slot-body">
+        <div class="slot-name">Rita Cocktails — Navigli</div>
+        <div class="slot-note">5 Min. zu Fuß vom Mag. Rating 4.6★ — eine der besten Cocktailbars Mailands!</div>
+        <div class="links">
+          <a class="link-btn" href="https://www.ritacocktails.com/" target="_blank">Website</a>
+          <a class="link-btn maps" href="https://maps.google.com/?cid=12547980557457411071" target="_blank">Maps</a>
+        </div>
+      </div>
+    </div>
+    <div class="slot">
+      <div class="slot-time">21:00</div>
+      <div class="slot-body">
+        <div class="slot-name">Backdoor 43 — Weltkleinste Speakeasy-Bar</div>
+        <div class="slot-note">Private 1h-Session mit eigenem Bartender. Maximal 3 Personen pro Slot! 15€ Deposit bei Buchung.</div>
+        <div class="badges"><span class="badge b-red">Reservierung Pflicht! Max 3 Pers.</span></div>
+        <div class="links">
+          <a class="link-btn book" href="https://backdoor43.superbexperience.com/" target="_blank">Jetzt reservieren</a>
+          <a class="link-btn maps" href="https://maps.google.com/?cid=4341860727828896912" target="_blank">Maps</a>
+        </div>
+      </div>
+    </div>
+    <div class="slot">
+      <div class="slot-time">22:30</div>
+      <div class="slot-body">
+        <div class="slot-name">Fabrique Club</div>
+        <div class="slot-note">Mailands grösster Elektronik-Club in alter Fabrik. Bis 3.000 Personen. Mit Uber/Taxi ~15 Min.</div>
+        <div class="badges"><span class="badge b-red">Tickets online vorab kaufen!</span><span class="badge b-pink">Club</span></div>
+        <div class="links">
+          <a class="link-btn book" href="http://www.fabriquemilano.it/" target="_blank">Tickets &amp; Info</a>
+          <a class="link-btn maps" href="https://maps.google.com/?cid=9304245859788607774" target="_blank">Maps</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAG 6 -->
+<div class="day" id="d6">
+  <div class="day-header" onclick="tog('d6')">
+    <div class="day-num n6">6</div>
+    <div class="day-meta">
+      <div class="day-name">Abreise — Abflug 14:55</div>
+      <div class="day-date">Dienstag, 08. Juli</div>
+    </div>
+    <div class="chevron"><svg viewBox="0 0 12 12"><polyline points="4,2 8,6 4,10"/></svg></div>
+  </div>
+  <div class="slots">
+    <div class="slot">
+      <div class="slot-time">Morgens</div>
+      <div class="slot-body">
+        <div class="slot-name">Letzter Kaffee &amp; Spaziergang</div>
+        <div class="slot-note">Check-out erledigen. Gepäck aufgeben falls möglich.</div>
+      </div>
+    </div>
+    <div class="slot">
+      <div class="slot-time">12:30</div>
+      <div class="slot-body">
+        <div class="slot-name">Aufbruch zum Flughafen</div>
+        <div class="slot-note">Malpensa: ca. 50 Min. mit Malpensa Express. Linate: ca. 30 Min. Spätestens 12:30 abfahren!</div>
+        <div class="badges"><span class="badge b-red">Spätestens 12:30 abfahren!</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-label">Sofort zu buchen</div>
+
+<div class="book-section">
+  <a class="book-row" href="https://www.duomomilano.it/en/" target="_blank">
+    <div class="book-dot"></div>
+    <div class="book-info"><strong>Duomo Tickets (Tag 2)</strong><span>Wird schnell ausgebucht — jetzt buchen!</span></div>
+    <div class="book-arr">›</div>
+  </a>
+  <a class="book-row" href="https://www.ceresio7.com/en/milano/" target="_blank">
+    <div class="book-dot"></div>
+    <div class="book-info"><strong>Ceresio 7 Reservierung (Tag 4)</strong><span>Pool-Rooftop — sehr beliebt im Sommer</span></div>
+    <div class="book-arr">›</div>
+  </a>
+  <a class="book-row" href="https://backdoor43.superbexperience.com/" target="_blank">
+    <div class="book-dot"></div>
+    <div class="book-info"><strong>Backdoor 43 — Speakeasy (Tag 5)</strong><span>Max 3 Pers. pro Session, 15€ Deposit</span></div>
+    <div class="book-arr">›</div>
+  </a>
+  <a class="book-row" href="http://www.fabriquemilano.it/" target="_blank">
+    <div class="book-dot"></div>
+    <div class="book-info"><strong>Fabrique Club Tickets (Tag 5)</strong><span>Online vorab günstiger als an der Kasse</span></div>
+    <div class="book-arr">›</div>
+  </a>
+  <a class="book-row" href="https://www.serendibmilano.com/" target="_blank">
+    <div class="book-dot"></div>
+    <div class="book-info"><strong>Serendib Restaurant (Tag 2)</strong><span>Gruppe von 5 — unbedingt reservieren!</span></div>
+    <div class="book-arr">›</div>
+  </a>
+</div>
+
+<footer>Milano Juli 2025 &nbsp;·&nbsp; Viel Spass!</footer>
+
+<script>
+function tog(id) {
+  var el = document.getElementById(id);
+  el.classList.toggle('open');
+}
+</script>
+</body>
+</html>
