@@ -3,646 +3,757 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Milano Trip — Juli 2025</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<title>Milano Trip — July 2025</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #F5F0E8;
-  --card: #FFFDF9;
-  --text: #1C1A16;
-  --muted: #8A8070;
-  --border: #E8E2D6;
-  --accent: #C84B2F;
-  --green: #2A6B4A;
-  --blue: #1A4A7A;
-  --amber: #8A5A10;
-  --pink: #8A2A4A;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 300;
-  min-height: 100vh;
-  padding-bottom: 48px;
-}
-.hero {
-  background: var(--text);
-  color: var(--bg);
-  padding: 40px 24px 32px;
-  position: relative;
-  overflow: hidden;
-}
-.hero::before {
-  content: 'MILANO';
-  position: absolute;
-  font-family: 'DM Serif Display', serif;
-  font-size: 140px;
-  color: rgba(255,255,255,0.04);
-  bottom: -20px;
-  right: -10px;
-  white-space: nowrap;
-  pointer-events: none;
-  line-height: 1;
-}
-.hero-label {
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  color: rgba(245,240,232,.5);
-  margin-bottom: 12px;
-}
-.hero-title {
-  font-family: 'DM Serif Display', serif;
-  font-size: 42px;
-  line-height: 1.05;
-  margin-bottom: 6px;
-}
-.hero-title em { font-style: italic; color: #E8A070; }
-.hero-sub {
-  font-size: 13px;
-  color: rgba(245,240,232,.6);
-  margin-bottom: 24px;
-  line-height: 1.6;
-}
-.hero-pills { display: flex; flex-wrap: wrap; gap: 8px; }
-.pill {
-  font-size: 11px;
-  font-weight: 500;
-  padding: 5px 12px;
-  border-radius: 20px;
-  border: 1px solid rgba(245,240,232,.2);
-  color: rgba(245,240,232,.8);
-}
-
-.alert {
-  margin: 20px 16px 0;
-  background: #FFF3E0;
-  border-left: 3px solid #E8A030;
-  border-radius: 0 10px 10px 0;
-  padding: 12px 14px;
-  font-size: 12px;
-  color: #6A4010;
-  line-height: 1.7;
-}
-.alert strong { font-weight: 500; }
-
-.section-label {
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: var(--muted);
-  padding: 28px 20px 10px;
-}
-
-.day {
-  margin: 0 16px 12px;
-  background: var(--card);
-  border-radius: 16px;
-  border: 1px solid var(--border);
-  overflow: hidden;
-}
-.day-header {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 16px 18px;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
-}
-.day-header:hover { background: rgba(0,0,0,.015); }
-.day-num {
-  width: 38px; height: 38px;
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'DM Serif Display', serif;
-  font-size: 18px;
-  flex-shrink: 0;
-}
-.n1 { background: #E8F5EE; color: #1A5A36; }
-.n2 { background: #E8F0FA; color: #1A3A6A; }
-.n3 { background: #FAE8F0; color: #6A1A3A; }
-.n4 { background: #FAF0E0; color: #6A4010; }
-.n5 { background: #EAF5E0; color: #2A5010; }
-.n6 { background: #F0EDE8; color: #4A4038; }
-.day-meta { flex: 1 }
-.day-name { font-size: 15px; font-weight: 500; line-height: 1.3; }
-.day-date { font-size: 11px; color: var(--muted); margin-top: 2px; }
-.chevron {
-  width: 20px; height: 20px;
-  border-radius: 50%;
-  background: var(--border);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-  transition: transform .25s, background .2s;
-}
-.chevron svg { width: 10px; height: 10px; fill: none; stroke: var(--muted); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform .25s; }
-.day.open .chevron { background: var(--text); }
-.day.open .chevron svg { stroke: var(--bg); transform: rotate(90deg); }
-
-.slots { display: none; border-top: 1px solid var(--border); }
-.day.open .slots { display: block; }
-
-.slot {
-  display: flex;
-  gap: 12px;
-  padding: 14px 18px;
-  border-bottom: 1px solid var(--border);
-}
-.slot:last-child { border: none; }
-.slot-time {
-  font-size: 10px;
-  font-weight: 500;
-  color: var(--muted);
-  min-width: 56px;
-  padding-top: 3px;
-  flex-shrink: 0;
-  letter-spacing: .04em;
-}
-.slot-body { flex: 1; min-width: 0; }
-.slot-name { font-size: 14px; font-weight: 500; line-height: 1.4; }
-.slot-note { font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.55; }
-.badges { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 7px; }
-.badge {
-  font-size: 10px;
-  font-weight: 500;
-  padding: 3px 8px;
-  border-radius: 20px;
-  white-space: nowrap;
-}
-.b-red { background: #FDE8E8; color: #8A1A1A; }
-.b-amber { background: #FDF0D8; color: #7A4A08; }
-.b-green { background: #E2F5E8; color: #1A5A2A; }
-.b-blue { background: #E2EEF8; color: #1A3A6A; }
-.b-pink { background: #F8E2EE; color: #6A1A3A; }
-.links { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-a.link-btn {
-  font-size: 11px;
-  font-weight: 500;
-  padding: 5px 12px;
-  border-radius: 20px;
-  border: 1px solid var(--border);
-  color: var(--text);
-  text-decoration: none;
-  background: var(--bg);
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  transition: background .15s, border-color .15s;
-}
-a.link-btn:hover { background: var(--border); }
-a.link-btn.maps { border-color: #BDD4F0; background: #EEF4FC; color: #1A3A6A; }
-a.link-btn.book { border-color: #F0BDBD; background: #FCF0EE; color: #8A1A1A; }
-
-.book-section {
-  margin: 0 16px;
-  background: var(--card);
-  border-radius: 16px;
-  border: 1px solid var(--border);
-  overflow: hidden;
-}
-.book-section .section-label { padding: 16px 18px 12px; margin: 0; border-bottom: 1px solid var(--border); }
-.book-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 13px 18px;
-  border-bottom: 1px solid var(--border);
-  text-decoration: none;
-  color: var(--text);
-  transition: background .15s;
-}
-.book-row:last-child { border: none; }
-.book-row:hover { background: rgba(0,0,0,.02); }
-.book-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
-.book-info { flex: 1; }
-.book-info strong { font-size: 13px; font-weight: 500; display: block; }
-.book-info span { font-size: 11px; color: var(--muted); }
-.book-arr { font-size: 18px; color: var(--border); }
-
-footer {
-  text-align: center;
-  font-size: 11px;
-  color: var(--muted);
-  margin-top: 32px;
-  letter-spacing: .05em;
-}
+:root{--bg:#F5F0E8;--card:#FFFDF9;--text:#1C1A16;--muted:#8A8070;--border:#E8E2D6;--accent:#C84B2F;--wa:#25D366}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;padding-bottom:60px}
+.lang-bar{display:flex;justify-content:flex-end;padding:10px 16px 0;gap:6px}
+.lang-btn{font-size:11px;font-weight:500;padding:5px 14px;border-radius:20px;border:1px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
+.lang-btn.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+.de{display:block}.en{display:none}
+body.en-mode .de{display:none}body.en-mode .en{display:block}
+span.de{display:inline}span.en{display:none}
+body.en-mode span.de{display:none}body.en-mode span.en{display:inline}
+.hero{background:var(--text);color:var(--bg);padding:36px 20px 30px;position:relative;overflow:hidden}
+.hero::after{content:'MILANO';position:absolute;font-family:'DM Serif Display',serif;font-size:130px;color:rgba(255,255,255,.04);bottom:-10px;right:-8px;pointer-events:none;line-height:1;white-space:nowrap}
+.hero-eye{font-size:10px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(245,240,232,.45);margin-bottom:10px}
+.hero-title{font-family:'DM Serif Display',serif;font-size:44px;line-height:1;margin-bottom:8px}
+.hero-title em{font-style:italic;color:#E8A070}
+.hero-sub{font-size:13px;color:rgba(245,240,232,.55);line-height:1.65;margin-bottom:22px}
+.hero-pills{display:flex;flex-wrap:wrap;gap:7px}
+.pill{font-size:10px;font-weight:500;padding:5px 12px;border-radius:20px;border:1px solid rgba(245,240,232,.18);color:rgba(245,240,232,.7)}
+.alert{margin:18px 16px 0;background:#FFF8ED;border-left:3px solid #E8A030;border-radius:0 10px 10px 0;padding:11px 14px;font-size:12px;color:#6A3A08;line-height:1.7}
+.alert strong{font-weight:500}
+.sec-label{font-size:10px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);padding:26px 20px 8px}
+.day{margin:0 16px 12px;background:var(--card);border-radius:16px;border:1px solid var(--border);overflow:hidden}
+.day-hd{display:flex;align-items:center;gap:13px;padding:14px 16px;cursor:pointer;user-select:none}
+.day-hd:active{background:rgba(0,0,0,.02)}
+.dnum{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:17px;flex-shrink:0}
+.n1{background:#E6F5EE;color:#1A5030}.n2{background:#E6EEF8;color:#1A3268}.n3{background:#F8E6EE;color:#681830}.n4{background:#F8F0E0;color:#684010}.n5{background:#EAF3DE;color:#285010}.n6{background:#EEECEA;color:#3A3830}
+.dmeta{flex:1}.dname{font-size:14px;font-weight:500;line-height:1.3}.dsub{font-size:11px;color:var(--muted);margin-top:1px}
+.chev{width:22px;height:22px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s}
+.chev svg{width:9px;height:9px;fill:none;stroke:var(--muted);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .25s}
+.day.open .chev{background:var(--text)}.day.open .chev svg{stroke:var(--bg);transform:rotate(90deg)}
+.day-body{display:none;border-top:1px solid var(--border)}.day.open .day-body{display:block}
+.slot{padding:13px 16px;border-bottom:1px solid var(--border)}.slot:last-child{border:none}
+.sr{display:flex;gap:10px;align-items:flex-start}
+.st{font-size:10px;font-weight:500;color:var(--muted);min-width:58px;padding-top:3px;flex-shrink:0;letter-spacing:.04em;line-height:1.4}
+.sc{flex:1;min-width:0}
+.stitle{font-size:14px;font-weight:500;line-height:1.35;color:var(--text)}
+.snote{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.55}
+.badges{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.b{font-size:10px;font-weight:500;padding:2px 8px;border-radius:20px}
+.br{background:#FDEAEA;color:#881A1A}.ba{background:#FDF0D8;color:#7A4408}.bg{background:#E2F5E8;color:#1A5828}
+.links{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+a.lb{font-size:11px;font-weight:500;padding:5px 11px;border-radius:20px;border:1px solid var(--border);color:var(--text);text-decoration:none;background:var(--bg);display:inline-flex;align-items:center;gap:4px}
+a.lb:active{background:var(--border)}
+a.lb.m{border-color:#C0D4F0;background:#EEF3FC;color:#1A3268}
+a.lb.bk{border-color:#F0C0C0;background:#FCF0EE;color:#881A1A}
+.opt-label{font-size:11px;font-weight:500;color:var(--muted);margin:10px 0 6px;letter-spacing:.04em}
+.opts{display:flex;flex-direction:column;gap:6px}
+.obtn{display:block;width:100%;text-align:left;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 13px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .15s;position:relative}
+.obtn:active{background:var(--border)}
+.obtn.sel{background:var(--text);border-color:var(--text)}
+.otag{font-size:10px;font-weight:500;padding:2px 8px;border-radius:20px;background:rgba(0,0,0,.08);color:var(--text);display:inline-block;margin-bottom:5px}
+.obtn.sel .otag{background:rgba(255,255,255,.15);color:rgba(245,240,232,.8)}
+.otitle{font-size:13px;font-weight:500;color:var(--text);line-height:1.35}
+.obtn.sel .otitle{color:#F5F0E8}
+.odesc{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.5}
+.obtn.sel .odesc{color:rgba(245,240,232,.55)}
+.olinks{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px;align-items:center}
+.obtn.sel .olinks a{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);color:rgba(245,240,232,.9)}
+.obtn.sel .olinks a.m{background:rgba(100,150,255,.15);border-color:rgba(100,150,255,.3);color:rgba(200,220,255,.9)}
+.vote-btn{font-size:10px;font-weight:500;padding:4px 10px;border-radius:20px;background:rgba(37,211,102,.15);color:#128C3E;border:1px solid rgba(37,211,102,.3);cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:4px;text-decoration:none}
+.vote-btn:hover{background:rgba(37,211,102,.25)}
+.vote-btn svg{width:11px;height:11px;fill:currentColor}
+.obtn.sel .vote-btn{background:rgba(37,211,102,.2);color:#4AE082;border-color:rgba(37,211,102,.4)}
+.feedback-box{margin:20px 16px;background:linear-gradient(135deg,#25D366,#128C3E);border-radius:16px;padding:18px 18px;color:#fff}
+.feedback-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.feedback-head svg{width:22px;height:22px;fill:#fff}
+.feedback-title{font-size:15px;font-weight:500}
+.feedback-desc{font-size:12px;color:rgba(255,255,255,.85);line-height:1.55;margin-bottom:14px}
+.feedback-btns{display:flex;flex-direction:column;gap:6px}
+.fb{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;padding:10px 14px;border-radius:10px;text-align:left;text-decoration:none;cursor:pointer;display:flex;align-items:center;gap:10px}
+.fb:hover{background:rgba(255,255,255,.22)}
+.fb-icon{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px}
+.bsec{margin:0 16px 12px;background:var(--card);border-radius:16px;border:1px solid var(--border);overflow:hidden}
+.brow{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);text-decoration:none;color:var(--text)}
+.brow:last-child{border:none}.brow:active{background:rgba(0,0,0,.02)}
+.bdot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.binfo{flex:1}.binfo strong{font-size:13px;font-weight:500;display:block;line-height:1.3}.binfo span{font-size:11px;color:var(--muted)}
+.barr{font-size:18px;color:var(--border)}
+footer{text-align:center;font-size:11px;color:var(--muted);margin-top:32px;letter-spacing:.06em}
 </style>
 </head>
 <body>
 
+<div class="lang-bar">
+  <button class="lang-btn active" id="btn-de" onclick="setLang('de')">DE</button>
+  <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+</div>
+
 <div class="hero">
-  <div class="hero-label">Gruppenreise · 5 Personen</div>
+  <div class="hero-eye"><span class="de">Gruppenreise · 5 Personen</span><span class="en">Group trip · 5 people</span></div>
   <div class="hero-title">Milano<br><em>Juli 2025</em></div>
-  <div class="hero-sub">03. – 08. Juli &nbsp;·&nbsp; NH Collection CityLife<br>6 Tage · 2 Konzerte · Bars · Rooftops · Clubs</div>
+  <div class="hero-sub">
+    <span class="de">03.–08. Juli · NH Collection CityLife<br>6 Tage · 2 Konzerte · Bars · Rooftops · Clubs</span>
+    <span class="en">03–08 July · NH Collection CityLife<br>6 days · 2 concerts · Bars · Rooftops · Clubs</span>
+  </div>
   <div class="hero-pills">
     <span class="pill">Foo Fighters 05.07.</span>
     <span class="pill">System of a Down 06.07.</span>
-    <span class="pill">Abflug 14:55 Uhr</span>
+    <span class="pill"><span class="de">Abflug</span><span class="en">Departure</span> 14:55</span>
   </div>
 </div>
 
 <div class="alert">
-  <strong>Wichtig:</strong> Anfang Juli ca. 34–36°C. Täglich Mittagspause 13–17 Uhr einplanen! Konzertabende: Metro nutzen, mind. 90 Min. früher losfahren. Kein Schatten vor Ort.
+  <div class="de"><strong>Wichtig:</strong> 34–36°C Anfang Juli. Täglich Mittagspause 13–17 Uhr einplanen! Konzertabende: Metro nutzen, mind. 90 Min. früher losfahren.</div>
+  <div class="en"><strong>Important:</strong> 34–36°C in early July. Plan a midday break 1–5pm every day! Concert evenings: use the Metro, leave at least 90 min early.</div>
 </div>
 
-<div class="section-label">Tagesplan</div>
+<!-- FEEDBACK BOX -->
+<div class="feedback-box">
+  <div class="feedback-head">
+    <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.18 3.03 14.69 2 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.23 8.23 0 012.41 5.83c0 4.54-3.7 8.23-8.24 8.23-1.48 0-2.93-.39-4.19-1.15l-.3-.17-3.12.82.83-3.04-.2-.32a8.19 8.19 0 01-1.26-4.38c.01-4.54 3.7-8.24 8.25-8.24M8.53 7.33c-.16 0-.43.06-.66.31-.22.25-.87.86-.87 2.07 0 1.22.89 2.39 1 2.56.14.17 1.76 2.67 4.25 3.73.59.27 1.05.42 1.41.53.59.19 1.13.16 1.56.1.48-.07 1.46-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.07-.1-.23-.16-.48-.27-.25-.14-1.47-.74-1.69-.82-.23-.08-.37-.12-.56.12-.16.25-.64.81-.78.97-.15.17-.29.19-.53.07-.26-.13-1.06-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.12-.24-.01-.39.11-.5.11-.11.27-.29.37-.44.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.11-.56-1.35-.77-1.84-.2-.48-.4-.42-.56-.43-.14 0-.3-.01-.47-.01z"/></svg>
+    <div class="feedback-title"><span class="de">Feedback an die Gruppe</span><span class="en">Feedback to the group</span></div>
+  </div>
+  <div class="feedback-desc">
+    <span class="de">Verbesserungsvorschlag? Frage zum Ablauf? Tippe auf einen Button — WhatsApp öffnet sich mit vorgefertigter Nachricht!</span>
+    <span class="en">Improvement idea? Question about the plan? Tap a button — WhatsApp opens with a ready-made message!</span>
+  </div>
+  <div class="feedback-btns">
+    <a class="fb" href="#" onclick="return wa('idea')">
+      <div class="fb-icon">💡</div>
+      <div><span class="de">Verbesserungsvorschlag senden</span><span class="en">Send an improvement idea</span></div>
+    </a>
+    <a class="fb" href="#" onclick="return wa('question')">
+      <div class="fb-icon">❓</div>
+      <div><span class="de">Frage stellen</span><span class="en">Ask a question</span></div>
+    </a>
+    <a class="fb" href="#" onclick="return wa('change')">
+      <div class="fb-icon">🔄</div>
+      <div><span class="de">Änderung vorschlagen</span><span class="en">Suggest a change</span></div>
+    </a>
+  </div>
+</div>
+
+<div class="sec-label">
+  <span class="de">Tagesplan — Optionen auswählen &amp; abstimmen</span>
+  <span class="en">Daily plan — pick options &amp; vote</span>
+</div>
 
 <!-- TAG 1 -->
 <div class="day" id="d1">
-  <div class="day-header" onclick="tog('d1')">
-    <div class="day-num n1">1</div>
-    <div class="day-meta">
-      <div class="day-name">Ankunft &amp; Chinatown</div>
-      <div class="day-date">Donnerstag, 03. Juli</div>
+  <div class="day-hd" onclick="tog('d1')">
+    <div class="dnum n1">1</div>
+    <div class="dmeta">
+      <div class="dname"><span class="de">Ankunft &amp; Entspannter Start</span><span class="en">Arrival &amp; Easy Start</span></div>
+      <div class="dsub"><span class="de">Donnerstag, 03. Juli</span><span class="en">Thursday, 03 July</span></div>
     </div>
-    <div class="chevron"><svg viewBox="0 0 12 12"><polyline points="4,2 8,6 4,10"/></svg></div>
+    <div class="chev"><svg viewBox="0 0 12 12"><polyline points="4,2 8,6 4,10"/></svg></div>
   </div>
-  <div class="slots">
-    <div class="slot">
-      <div class="slot-time">09:15</div>
-      <div class="slot-body">
-        <div class="slot-name">Ankunft — Hotel NH Collection CityLife</div>
-        <div class="slot-note">Check-in, Gepäck abgeben falls Zimmer noch nicht bereit</div>
-        <div class="links">
-          <a class="link-btn" href="https://www.nh-hotels.com/en/hotel/nh-collection-milano-citylife" target="_blank">Hotel</a>
-          <a class="link-btn maps" href="https://maps.google.com/?cid=16459654856201404266" target="_blank">Maps</a>
+  <div class="day-body">
+
+    <div class="slot"><div class="sr"><div class="st">09:15</div><div class="sc">
+      <div class="stitle"><span class="de">Ankunft — Hotel NH Collection CityLife</span><span class="en">Arrival — Hotel NH Collection CityLife</span></div>
+      <div class="snote"><span class="de">Check-in, Gepäck abgeben falls Zimmer noch nicht bereit</span><span class="en">Check-in, leave luggage if room not ready yet</span></div>
+      <div class="links"><a class="lb" href="https://www.nh-hotels.com/en/hotel/nh-collection-milano-citylife" target="_blank">Hotel</a><a class="lb m" href="https://maps.google.com/?cid=16459654856201404266" target="_blank">Maps</a></div>
+    </div></div></div>
+
+    <div class="slot"><div class="sr">
+      <div class="st"><span class="de">Mittag</span><span class="en">Lunch</span></div>
+      <div class="sc">
+        <div class="stitle"><span class="de">Chinatown — Street Food</span><span class="en">Chinatown — Street Food</span></div>
+        <div class="snote"><span class="de">Dumplings, Nudeln, Bubble Tea</span><span class="en">Dumplings, noodles, bubble tea</span></div>
+        <div class="badges"><span class="b ba"><span class="de">Hitze: viel Wasser!</span><span class="en">Heat: drink water!</span></span></div>
+        <div class="links"><a class="lb m" href="https://maps.google.com/?q=Via+Paolo+Sarpi+Milano" target="_blank">Maps</a></div>
+      </div>
+    </div></div>
+
+    <div class="slot"><div class="sr">
+      <div class="st"><span class="de">Nachmittag</span><span class="en">Afternoon</span></div>
+      <div class="sc">
+        <div class="stitle"><span class="de">Option wählen &amp; abstimmen:</span><span class="en">Pick &amp; vote:</span></div>
+        <div class="opts">
+          <button class="obtn" onclick="sel(this,'t1a')">
+            <div class="otag">Option A</div>
+            <div class="otitle"><span class="de">Cat Café + Castello + Park</span><span class="en">Cat Café + Castle + Park</span></div>
+            <div class="odesc"><span class="de">Cat Café, Castello Sforzesco, Parco Sempione</span><span class="en">Cat Café, Castello Sforzesco, Parco Sempione</span></div>
+            <div class="olinks">
+              <a class="lb m" href="https://maps.google.com/?cid=4157819568318733634" target="_blank" onclick="ev(event)">Maps</a>
+              <a class="vote-btn" href="#" onclick="return vote(event,'Tag 1 Nachmittag','Option A - Cat Café + Castello + Park')"><svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.18 3.03 14.69 2 12.04 2"/></svg><span class="de">Abstimmen</span><span class="en">Vote</span></a>
+            </div>
+          </button>
+          <button class="obtn" onclick="sel(this,'t1a')">
+            <div class="otag">Option B</div>
+            <div class="otitle"><span class="de">Hotel / Ausruhen</span><span class="en">Hotel / Rest</span></div>
+            <div class="odesc"><span class="de">Energie für den Abend tanken</span><span class="en">Recharge for the evening</span></div>
+            <div class="olinks">
+              <a class="vote-btn" href="#" onclick="return vote(event,'Tag 1 Nachmittag','Option B - Hotel / Ausruhen')"><svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.18 3.03 14.69 2 12.04 2"/></svg><span class="de">Abstimmen</span><span class="en">Vote</span></a>
+            </div>
+          </button>
         </div>
       </div>
-    </div>
-    <div class="slot">
-      <div class="slot-time">11:00</div>
-      <div class="slot-body">
-        <div class="slot-name">Chinatown (Via Paolo Sarpi) + Cat Café</div>
-        <div class="slot-note">Street Food &amp; Shops. Cat Café: 5€ Mindestkonsum, nachmittags aktiver</div>
-        <div class="badges"><span class="badge b-amber">Hitze: Wasser mitnehmen!</span></div>
-        <div class="links">
-          <a class="link-btn" href="https://www.crazycatcafe.it/" target="_blank">Cat Café</a>
-          <a class="link-btn maps" href="https://maps.google.com/?cid=4157819568318733634" target="_blank">Maps</a>
+    </div></div>
+
+    <div class="slot"><div class="sr">
+      <div class="st">Ab 19:00</div>
+      <div class="sc">
+        <div class="stitle"><span class="de">Aperitivo — abstimmen:</span><span class="en">Aperitivo — vote:</span></div>
+        <div class="opts">
+          <button class="obtn" onclick="sel(this,'t1b')">
+            <div class="otag">Terrazza Triennale ✅</div>
+            <div class="otitle"><span class="de">Rooftop mit Park-Blick</span><span class="en">Rooftop with park view</span></div>
+            <div class="odesc"><span class="de">Empfohlen! Di–So ab 18 Uhr</span><span class="en">Recommended! Tue–Sun from 6pm</span></div>
+            <div class="olinks">
+              <a class="lb" href="https://triennale.org/ristoranti/terrazza-triennale" target="_blank" onclick="ev(event)">Web</a>
+              <a class="lb m" href="https://maps.google.com/?cid=2347345656614645793" target="_blank" onclick="ev(event)">Maps</a>
+              <a class="vote-btn" href="#" onclick="return vote(event,'Tag 1 Abend','Terrazza Triennale')"><svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.18 3.03 14.69 2 12.04 2"/></svg><span class="de">Abstimmen</span><span class="en">Vote</span></a>
+            </div>
+          </button>
+          <button class="obtn" onclick="sel(this,'t1b')">
+            <div class="otag">Arco della Pace ✅</div>
+            <div class="otitle"><span class="de">Bars am Arco della Pace</span><span class="en">Bars at Arco della Pace</span></div>
+            <div class="odesc"><span class="de">Outdoor-Bars, entspannt</span><span class="en">Outdoor bars, relaxed</span></div>
+            <div class="olinks">
+              <a class="lb m" href="https://maps.google.com/?q=Arco+della+Pace+Milano" target="_blank" onclick="ev(event)">Maps</a>
+              <a class="vote-btn" href="#" onclick="return vote(event,'Tag 1 Abend','Arco della Pace')"><svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.18 3.03 14.69 2 12.04 2"/></svg><span class="de">Abstimmen</span><span class="en">Vote</span></a>
+            </div>
+          </button>
         </div>
       </div>
-    </div>
-    <div class="slot">
-      <div class="slot-time">14:30</div>
-      <div class="slot-body">
-        <div class="slot-name">Castello Sforzesco &amp; Parco Sempione</div>
-        <div class="slot-note">Gratis Parkeintritt — ideal zum Abkühlen. Mo–So 07–19:30 Uhr</div>
-        <div class="links">
-          <a class="link-btn" href="https://www.milanocastello.it/" target="_blank">Website</a>
-          <a class="link-btn maps" href="https://maps.google.com/?cid=7302267279280095899" target="_blank">Maps</a>
-        </div>
-      </div>
-    </div>
-    <div class="slot">
-      <div class="slot-time">19:00</div>
-      <div class="slot-body">
-        <div class="slot-name">Terrazza Triennale — Aperitivo</div>
-        <div class="slot-note">Blick auf Parco Sempione &amp; Alpen. Di–So ab 18 Uhr</div>
-        <div class="badges"><span class="badge b-green">Neu: besser als Arco della Pace</span></div>
-        <div class="links">
-          <a class="link-btn" href="https://triennale.org/ristoranti/terrazza-triennale" target="_blank">Website</a>
-          <a class="link-btn maps" href="https://maps.google.com/?cid=2347345656614645793" target="_blank">Maps</a>
-        </div>
-      </div>
-    </div>
-    <div class="slot">
-      <div class="slot-time">21:30</div>
-      <div class="slot-body">
-        <div class="slot-name">Nottingham Forest — Cocktailbar</div>
-        <div class="slot-note">World's 50 Best Bars. Keine Reservierung möglich — früh ankommen! Di–Sa 19–02 Uhr</div>
-        <div class="badges"><span class="badge b-amber">Kein Reservierungssystem</span></div>
-        <div class="links">
-          <a class="link-btn" href="http://www.nottingham-forest.com/" target="_blank">Website</a>
-          <a class="link-btn maps" href="https://maps.google.com/?cid=7436253074413873312" target="_blank">Maps</a>
-        </div>
-      </div>
-    </div>
+    </div></div>
+
   </div>
 </div>
 
 <!-- TAG 2 -->
 <div class="day" id="d2">
-  <div class="day-header" onclick="tog('d2')">
-    <div class="day-num n2">2</div>
-    <div class="day-meta">
-      <div class="day-name">Duomo &amp; Sri Lankan Dinner</div>
-      <div class="day-date">Freitag, 04. Juli</div>
+  <div class="day-hd" onclick="tog('d2')">
+    <div class="dnum n2">2</div>
+    <div class="dmeta">
+      <div class="dname"><span class="de">Duomo, Mittagessen &amp; Drinks</span><span class="en">Duomo, Lunch &amp; Drinks</span></div>
+      <div class="dsub"><span class="de">Freitag, 04. Juli</span><span class="en">Friday, 04 July</span></div>
     </div>
-    <div class="chevron"><svg viewBox="0 0 12 12"><polyline points="4,2 8,6 4,10"/></svg></div>
+    <div class="chev"><svg viewBox="0 0 12 12"><polyline points="4,2 8,6 4,10"/></svg></div>
   </div>
-  <div class="slots">
-    <div class="slot">
-      <div class="slot-time">08:30</div>
-      <div class="slot-body">
-        <div class="slot-name">Duomo di Milano + Rooftop</div>
-        <div class="slot-note">Früh = keine Schlange &amp; bestes Licht. Tickets unbedingt vorab buchen!</div>
-        <div class="badges"><span class="badge b-red">Tickets VORAB buchen — ausgebucht!</span></div>
-        <div class="links">
-          <a class="link-btn book" href="https://www.duomomilano.it/en/" target="_blank">Tickets buchen</a>
-          <a class="link-btn maps" href="https://maps.google.com/?cid=12357681832208772627" target="_blank">Maps</a>
+  <div class="day-body">
+
+    <div class="slot"><div class="sr"><div class="st">08:30</div><div class="sc">
+      <div class="stitle">Duomo di Milano + Rooftop</div>
+      <div class="snote"><span class="de">Früh = keine Schlange. ~10:00 buchen!</span><span class="en">Early = no queue. Book ~10am slot!</span></div>
+      <div class="badges"><span class="b br"><span class="de">Tickets VORAB buchen!</span><span class="en">Book tickets IN ADVANCE!</span></span></div>
+      <div class="links"><a class="lb bk" href="https://www.duomomilano.it/en/" target="_blank"><span class="de">Tickets</span><span class="en">Tickets</span></a><a class="lb m" href="https://maps.google.com/?cid=12357681832208772627" target="_blank">Maps</a></div>
+    </div></div></div>
+
+    <div class="slot"><div class="sr">
+      <div class="st">12:30</div>
+      <div class="sc">
+        <div class="stitle"><span class="de">Mittagessen — abstimmen:</span><span class="en">Lunch — vote:</span></div>
+        <div class="opts">
+          <button class="obtn" onclick="sel(this,'t2a')">
+            <div class="otag">Luini</div>
+            <div class="otitle">Panzerotti Luini</div>
+            <div class="odesc"><span class="de">Klassiker seit 1940. Mo–Sa 10–20 Uhr</span><span class="en">Classic since 1940. Mon–Sat 10am–8pm</span></div>
+            <div class="olinks">
+              <a class="lb" href="https://www.luini.it/" target="_blank" onclick="ev(event)">Web</a>
+              <a class="lb m" href="https://maps.google.com/?q=Luini+panzerotti+Milano" target="_blank" onclick="ev(event)">Maps</a>
+              <a class="vote-btn" href="#" onclick="return vote(event,'Tag 2 Mittag','Luini Panzerotti')"><svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.18 3.03 14.69 2 12.04 2"/></svg><span class="de">Abstimmen</span><span class="en">Vote</span></a>
+            </div>
+          </button>
+          <button class="obtn" onclick="sel(this,'t2a')">
+            <div class="otag">Obicà</div>
+            <div class="otitle"><span class="de">Obicà — Duomo-Blick</span><span class="en">Obicà — Duomo view</span></div>
+            <div class="odesc"><span class="de">Terrasse mit Duomo-Blick</span><span class="en">Terrace with Duomo view</span></div>
+            <div class="olinks">
+              <a class="lb" href="https://www.obica.com/restaurants/milano-duomo" target="_blank" onclick="ev(event)">Web</a>
+              <a class="vote-btn" href="#" onclick="return vote(event,'Tag 2 Mittag','Obicà Mozzarella Bar')"><svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.18 3.03 14.69 2 12.04 2"/></svg><span class="de">Abstimmen</span><span class="en">Vote</span></a>
+            </div>
+          </button>
+          <button class="obtn" onclick="sel(this,'t2a')">
+            <div class="otag">Camparino</div>
+            <div class="otitle">Camparino in Galleria</div>
+            <div class="odesc"><span class="de">World's 50 Best Bars</span><span class="en">World's 50 Best Bars</span></div>
+            <div class="olinks">
+              <a class="lb" href="http://www.camparino.com/" target="_blank" onclick="ev(event)">Web</a>
+              <a class="vote-btn" href="#" onclick="return vote(event,'Tag 2 Mittag','Camparino in Galleria')"><svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.18 3.03 14.69 2 12.04 2"/></svg><span class="de">Abstimmen</span><span class="en">Vote</span></a>
+            </div>
+          </button>
         </div>
       </div>
-    </div>
-    <div class="slot">
-      <div class="slot-time">10:30</div>
-      <div class="slot-body">
-        <div class="slot-name">Galleria Vittorio Emanuele II</div>
-        <div class="slot-note">Gratis — Glaskuppel, Mosaike, Luxus-Boutiquen. Immer geöffnet</div>
-        <div class="links">
-          <a class="link-btn maps" href="https://maps.google.com/?cid=2813514643363451926" target="_blank">Maps</a>
+    </div></div>
+
+    <div class="slot"><div class="sr">
+      <div class="st">14–17</div>
+      <div class="sc">
+        <div class="stitle"><span class="de">Nachmittag:</span><span class="en">Afternoon:</span></div>
+        <div class="opts">
+          <button class="obtn" onclick="sel(this,'t2b')">
+            <div class="otag">Option A</div>
+            <div class="otitle"><span class="de">Friseur + Brera</span><span class="en">Hairdresser + Brera</span></div>
+            <div class="odesc"><span class="de">Brera, Pinacoteca, Gelato</span><span class="en">Brera, Pinacoteca, gelato</span></div>
+            <div class="olinks">
+              <a class="vote-btn" href="#" onclick="return vote(event,'Tag 2 Nachmittag','Option A - Friseur + Brera')"><svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.18 3.03 14.69 2 12.04 2"/></svg><span class="de">Abstimmen</span><span class="en">Vote</span></a>
+            </div>
+          </button>
+          <button class="obtn" onclick="sel(this,'t2b')">
+            <div class="otag">Option B</div>
+            <div class="otitle"><span class="de">Hotel — Siesta</span><span class="en">Hotel — Siesta</span></div>
+            <div class="odesc"><span class="de">Stärkste Hitze — Pflichtpause!</span><span class="en">Peak heat — mandatory rest!</span></div>
+            <div class="olinks">
+              <a class="vote-btn" href="#" onclick="return vote(event,'Tag 2 Nachmittag','Option B - Hotel Siesta')"><svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.18 3.03 14.69 2 12.04 2"/></svg><span class="de">Abstimmen</span><span class="en">Vote</span></a>
+            </div>
+          </button>
         </div>
       </div>
-    </div>
-    <div class="slot">
-      <div class="slot-time">11:30</div>
-      <div class="slot-body">
-        <div class="slot-name">Camparino in Galleria</div>
-        <div class="slot-note">Negroni-Legende seit 1915 — World's 50 Best Bars. Mo–Sa 09:30–00 Uhr</div>
-        <div class="badges"><span class="badge b-green">Neu ergänzt — iconic!</span></div>
-        <div class="links">
-          <a class="link-btn" href="http://www.camparino.com/" target="_blank">Website</a>
-          <a class="link-btn maps" href="https://maps.google.com/?cid=12487426857985224575" target="_blank">Maps</a>
+    </div></div>
+
+    <div class="slot"><div class="sr">
+      <div class="st">Ab 16:00</div>
+      <div class="sc">
+        <div class="stitle"><span class="de">Drinks — abstimmen:</span><span class="en">Drinks — vote:</span></div>
+        <div class="opts">
+          <button class="obtn" onclick="sel(this,'t2c')">
+            <div class="otag">Nottingham Forest</div>
+            <div class="otitle"><span class="de">World's 50 Best Cocktailbar</span><span class="en">World's 50 Best Cocktail Bar</span></div>
+            <div class="odesc"><span class="de">Molekulare Cocktails</span><span class="en">Molecular cocktails</span></div>
+            <div class="olinks">
+              <a class="lb" href="http://www.nottingham-forest.com/" target="_blank" onclick="ev(event)">Web</a>
+              <a class="vote-btn" href="#" onclick="return vote(event,'Tag 2 Drinks','Nottingham Forest')"><svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.18 3.03 14.69 2 12.04 2"/></svg><span class="de">Abstimmen</span><span class="en">Vote</span></a>
+            </div>
+          </button>
+          <button class="obtn" onclick="sel(this,'t2c')">
+            <div class="otag">Terrazza Aperol</div>
+            <div class="otitle"><span class="de">Rooftop mit Duomo-Blick</span><span class="en">Rooftop with Duomo view</span></div>
+            <div class="odesc"><span class="de">Aperol Spritz mit Aussicht</span><span class="en">Aperol Spritz with a view</span></div>
+            <div class="olinks">
+              <a class="lb" href="https://www.terrazzaaperol.com/" target="_blank" onclick="ev(event)">Web</a>
+              <a class="vote-btn" href="#" onclick="return vote(event,'Tag 2 Drinks','Terrazza Aperol')"><svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.18 3.03 14.69 2 12.04 2"/></svg><span class="de">Abstimmen</span><span class="en">Vote</span></a>
+            </div>
+          </button>
+          <button class="obtn" onclick="sel(this,'t2c')">
+            <div class="otag">Rinascente Rooftop</div>
+            <div class="otitle"><span class="de">Duomo-Nachtblick</span><span class="en">Duomo night view</span></div>
+            <div class="odesc"><span class="de">7. OG Rinascente</span><span class="en">7th floor Rinascente</span></div>
+            <div class="olinks">
+              <a class="lb" href="http://www.rinascente.it/" target="_blank" onclick="ev(event)">Web</a>
+              <a class="vote-btn" href="#" onclick="return vote(event,'Tag 2 Drinks','La Rinascente Rooftop')"><svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.18 3.03 14.69 2 12.04 2"/></svg><span class="de">Abstimmen</span><span class="en">Vote</span></a>
+            </div>
+          </button>
         </div>
       </div>
-    </div>
-    <div class="slot">
-      <div class="slot-time">13–17 Uhr</div>
-      <div class="slot-body">
-        <div class="slot-name">Hotel — Siesta &amp; Friseurtermin</div>
-        <div class="slot-note">Stärkste Tageshitze — Pflichtpause!</div>
-        <div class="badges"><span class="badge b-amber">35°C Pflichtpause</span></div>
-      </div>
-    </div>
-    <div class="slot">
-      <div class="slot-time">19:30</div>
-      <div class="slot-body">
-        <div class="slot-name">Serendib — Sri Lankan Restaurant</div>
-        <div class="slot-note">Michelin Bib Gourmand. Tasting Menu ca. 35€. Gruppe von 5: unbedingt reservieren!</div>
-        <div class="badges"><span class="badge b-red">Reservierung nötig!</span></div>
-        <div class="links">
-          <a class="link-btn book" href="https://www.serendibmilano.com/" target="_blank">Reservieren</a>
-          <a class="link-btn maps" href="https://maps.google.com/?cid=1596117629500349352" target="_blank">Maps</a>
-        </div>
-      </div>
-    </div>
-    <div class="slot">
-      <div class="slot-time">22:00</div>
-      <div class="slot-body">
-        <div class="slot-name">La Rinascente Rooftop (7. OG)</div>
-        <div class="slot-note">Direkte Duomo-Sicht bei Nacht. Bis Mitternacht geöffnet</div>
-        <div class="badges"><span class="badge b-green">Bester Nacht-Rooftop</span></div>
-        <div class="links">
-          <a class="link-btn" href="http://www.rinascente.it/" target="_blank">Website</a>
-          <a class="link-btn maps" href="https://maps.google.com/?cid=11611806535064570536" target="_blank">Maps</a>
-        </div>
-      </div>
-    </div>
+    </div></div>
+
+    <div class="slot"><div class="sr"><div class="st">19:30</div><div class="sc">
+      <div class="stitle">Serendib — Sri Lankan Dinner</div>
+      <div class="snote"><span class="de">Michelin Bib Gourmand. ~35€. Für 5 Personen reservieren!</span><span class="en">Michelin Bib Gourmand. ~€35. Reserve for 5!</span></div>
+      <div class="badges"><span class="b br"><span class="de">Reservierung nötig!</span><span class="en">Reservation required!</span></span></div>
+      <div class="links"><a class="lb bk" href="https://www.serendibmilano.com/" target="_blank"><span class="de">Reservieren</span><span class="en">Reserve</span></a><a class="lb m" href="https://maps.google.com/?cid=1596117629500349352" target="_blank">Maps</a></div>
+    </div></div></div>
+
   </div>
 </div>
 
 <!-- TAG 3 -->
 <div class="day" id="d3">
-  <div class="day-header" onclick="tog('d3')">
-    <div class="day-num n3">3</div>
-    <div class="day-meta">
-      <div class="day-name">Brera &amp; Foo Fighters</div>
-      <div class="day-date">Samstag, 05. Juli</div>
+  <div class="day-hd" onclick="tog('d3')">
+    <div class="dnum n3">3</div>
+    <div class="dmeta">
+      <div class="dname">Brera &amp; Foo Fighters</div>
+      <div class="dsub"><span class="de">Samstag, 05. Juli</span><span class="en">Saturday, 05 July</span></div>
     </div>
-    <div class="chevron"><svg viewBox="0 0 12 12"><polyline points="4,2 8,6 4,10"/></svg></div>
+    <div class="chev"><svg viewBox="0 0 12 12"><polyline points="4,2 8,6 4,10"/></svg></div>
   </div>
-  <div class="slots">
-    <div class="slot">
-      <div class="slot-time">09:30</div>
-      <div class="slot-body">
-        <div class="slot-name">Brera Viertel — Pinacoteca di Brera</div>
-        <div class="slot-note">Cafés, Boutiquen, Kunstgalerien. Di–So 08:30–18 Uhr</div>
-        <div class="links">
-          <a class="link-btn" href="https://pinacotecabrera.org/" target="_blank">Website</a>
-          <a class="link-btn maps" href="https://maps.google.com/?cid=1960889438820185910" target="_blank">Maps</a>
+  <div class="day-body">
+
+    <div class="slot"><div class="sr">
+      <div class="st"><span class="de">Morgens</span><span class="en">Morning</span></div>
+      <div class="sc">
+        <div class="stitle"><span class="de">Brera Viertel erkunden</span><span class="en">Explore Brera district</span></div>
+        <div class="snote"><span class="de">Cafés, Boutiquen, Kunstgalerien</span><span class="en">Cafés, boutiques, art galleries</span></div>
+        <div class="links"><a class="lb" href="https://pinacotecabrera.org/" target="_blank">Pinacoteca</a><a class="lb m" href="https://maps.google.com/?cid=1960889438820185910" target="_blank">Maps</a></div>
+      </div>
+    </div></div>
+
+    <div class="slot"><div class="sr">
+      <div class="st"><span class="de">Mittag</span><span class="en">Lunch</span></div>
+      <div class="sc">
+        <div class="stitle"><span class="de">Mittagessen — abstimmen:</span><span class="en">Lunch — vote:</span></div>
+        <div class="opts">
+          <button class="obtn" onclick="sel(this,'t3a')">
+            <div class="otag">Eataly Smeraldo</div>
+            <div class="otitle">Eataly Milano Smeraldo</div>
+            <div class="odesc"><span class="de">Gourmet Food Hall</span><span class="en">Gourmet food hall</span></div>
+            <div class="olinks">
+              <a class="lb" href="https://www.eataly.net/" target="_blank" onclick="ev(event)">Web</a>
+              <a class="vote-btn" href="#" onclick="return vote(event,'Tag 3 Mittag','Eataly Smeraldo')"><svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.18 3.03 14.69 2 12.04 2"/></svg><span class="de">Abstimmen</span><span class="en">Vote</span></a>
+            </div>
+          </button>
+          <button class="obtn" onclick="sel(this,'t3a')">
+            <div class="otag">Trattoria Brera</div>
+            <div class="otitle"><span class="de">Lokale Trattoria in Brera</span><span class="en">Local trattoria in Brera</span></div>
+            <div class="odesc"><span class="de">Vor Ort aussuchen</span><span class="en">Pick on the spot</span></div>
+            <div class="olinks">
+              <a class="vote-btn" href="#" onclick="return vote(event,'Tag 3 Mittag','Trattoria in Brera')"><svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.18 3.03 14.69 2 12.04 2"/></svg><span class="de">Abstimmen</span><span class="en">Vote</span></a>
+            </div>
+          </button>
         </div>
       </div>
-    </div>
-    <div class="slot">
-      <div class="slot-time">13–17 Uhr</div>
-      <div class="slot-body">
-        <div class="slot-name">Hotel — Erholung für das Konzert</div>
-        <div class="slot-note">Leichte Kleidung, Wasser &amp; Powerbank einpacken!</div>
-        <div class="badges"><span class="badge b-amber">Konzert-Packliste!</span></div>
-      </div>
-    </div>
-    <div class="slot">
-      <div class="slot-time">17:30</div>
-      <div class="slot-body">
-        <div class="slot-name">FOO FIGHTERS — Ippodromo SNAI La Maura</div>
-        <div class="slot-note">Metro M1 → Haltestelle Uruguay → 15 Min. zu Fuß. Sa-Verkehr — früh losfahren! Kein Schatten vor Ort.</div>
-        <div class="badges"><span class="badge b-red">90 Min. früher abfahren!</span></div>
-        <div class="links">
-          <a class="link-btn" href="https://www.ticketone.it/" target="_blank">Tickets</a>
-          <a class="link-btn maps" href="https://maps.google.com/?cid=16175990574831006571" target="_blank">Maps</a>
+    </div></div>
+
+    <div class="slot"><div class="sr">
+      <div class="st"><span class="de">Nachmittag</span><span class="en">Afternoon</span></div>
+      <div class="sc">
+        <div class="stitle"><span class="de">Option wählen:</span><span class="en">Pick option:</span></div>
+        <div class="opts">
+          <button class="obtn" onclick="sel(this,'t3b')">
+            <div class="otag">Option A</div>
+            <div class="otitle">Corso Como + Bosco Verticale</div>
+            <div class="odesc"><span class="de">Shopping + Foto-Spot</span><span class="en">Shopping + photo spot</span></div>
+            <div class="olinks">
+              <a class="vote-btn" href="#" onclick="return vote(event,'Tag 3 Nachmittag','Option A - Corso Como + Bosco Verticale')"><svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.18 3.03 14.69 2 12.04 2"/></svg><span class="de">Abstimmen</span><span class="en">Vote</span></a>
+            </div>
+          </button>
+          <button class="obtn" onclick="sel(this,'t3b')">
+            <div class="otag">Option B</div>
+            <div class="otitle"><span class="de">Hotel — Energie tanken</span><span class="en">Hotel — recharge</span></div>
+            <div class="odesc"><span class="de">Für das Konzert vorbereiten</span><span class="en">Prepare for concert</span></div>
+            <div class="olinks">
+              <a class="vote-btn" href="#" onclick="return vote(event,'Tag 3 Nachmittag','Option B - Hotel')"><svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.18 3.03 14.69 2 12.04 2"/></svg><span class="de">Abstimmen</span><span class="en">Vote</span></a>
+            </div>
+          </button>
         </div>
       </div>
-    </div>
+    </div></div>
+
+    <div class="slot"><div class="sr"><div class="st">17:30</div><div class="sc">
+      <div class="stitle">FOO FIGHTERS — Ippodromo SNAI La Maura</div>
+      <div class="snote"><span class="de">Metro M1 → Uruguay → 15 Min. Fußweg</span><span class="en">Metro M1 → Uruguay → 15 min walk</span></div>
+      <div class="badges"><span class="b br"><span class="de">90 Min. früher!</span><span class="en">Leave 90 min early!</span></span></div>
+      <div class="links"><a class="lb bk" href="https://www.ticketone.it/" target="_blank">Tickets</a><a class="lb m" href="https://maps.google.com/?cid=16175990574831006571" target="_blank">Maps</a></div>
+    </div></div></div>
+
   </div>
 </div>
 
 <!-- TAG 4 -->
 <div class="day" id="d4">
-  <div class="day-header" onclick="tog('d4')">
-    <div class="day-num n4">4</div>
-    <div class="day-meta">
-      <div class="day-name">Relax &amp; System of a Down</div>
-      <div class="day-date">Sonntag, 06. Juli</div>
+  <div class="day-hd" onclick="tog('d4')">
+    <div class="dnum n4">4</div>
+    <div class="dmeta">
+      <div class="dname"><span class="de">Entspannter Tag &amp; System of a Down</span><span class="en">Easy Day &amp; System of a Down</span></div>
+      <div class="dsub"><span class="de">Sonntag, 06. Juli</span><span class="en">Sunday, 06 July</span></div>
     </div>
-    <div class="chevron"><svg viewBox="0 0 12 12"><polyline points="4,2 8,6 4,10"/></svg></div>
+    <div class="chev"><svg viewBox="0 0 12 12"><polyline points="4,2 8,6 4,10"/></svg></div>
   </div>
-  <div class="slots">
-    <div class="slot">
-      <div class="slot-time">11:00</div>
-      <div class="slot-body">
-        <div class="slot-name">Brunch — Bobino Milano</div>
-        <div class="slot-note">Panorama-Terrasse an der Porta Genova. Öffnungszeiten auf Website prüfen</div>
-        <div class="links">
-          <a class="link-btn" href="https://bobino.it/" target="_blank">Website</a>
-          <a class="link-btn maps" href="https://maps.google.com/?cid=279820898617882067" target="_blank">Maps</a>
+  <div class="day-body">
+
+    <div class="slot"><div class="sr">
+      <div class="st"><span class="de">Morgens</span><span class="en">Morning</span></div>
+      <div class="sc">
+        <div class="stitle"><span class="de">Brunch — abstimmen:</span><span class="en">Brunch — vote:</span></div>
+        <div class="opts">
+          <button class="obtn" onclick="sel(this,'t4a')">
+            <div class="otag">Bobino</div>
+            <div class="otitle">Bobino Milano</div>
+            <div class="odesc"><span class="de">Panorama-Terrasse</span><span class="en">Panorama terrace</span></div>
+            <div class="olinks">
+              <a class="lb" href="https://bobino.it/" target="_blank" onclick="ev(event)">Web</a>
+              <a class="vote-btn" href="#" onclick="return vote(event,'Tag 4 Brunch','Bobino Milano')"><svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.18 3.03 14.69 2 12.04 2"/></svg><span class="de">Abstimmen</span><span class="en">Vote</span></a>
+            </div>
+          </button>
+          <button class="obtn" onclick="sel(this,'t4a')">
+            <div class="otag">Pizzium</div>
+            <div class="otitle"><span class="de">Pizzium — Neapolitanische Pizza</span><span class="en">Pizzium — Neapolitan pizza</span></div>
+            <div class="odesc"><span class="de">Beste Pizza Mailands</span><span class="en">Best pizza in Milan</span></div>
+            <div class="olinks">
+              <a class="vote-btn" href="#" onclick="return vote(event,'Tag 4 Brunch','Pizzium')"><svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.18 3.03 14.69 2 12.04 2"/></svg><span class="de">Abstimmen</span><span class="en">Vote</span></a>
+            </div>
+          </button>
         </div>
       </div>
-    </div>
-    <div class="slot">
-      <div class="slot-time">15:00</div>
-      <div class="slot-body">
-        <div class="slot-name">Ceresio 7 — Pool Rooftop</div>
-        <div class="slot-note">Glamourösester Pool Mailands, 360° Skyline-Blick. Mo–So 12:30–15 &amp; 19:30–23 Uhr</div>
-        <div class="badges"><span class="badge b-red">Reservierung nötig!</span><span class="badge b-green">Neu ergänzt</span></div>
-        <div class="links">
-          <a class="link-btn book" href="https://www.ceresio7.com/en/milano/" target="_blank">Reservieren</a>
-          <a class="link-btn maps" href="https://maps.google.com/?cid=13896680527114500984" target="_blank">Maps</a>
+    </div></div>
+
+    <div class="slot"><div class="sr">
+      <div class="st"><span class="de">Nachmittag</span><span class="en">Afternoon</span></div>
+      <div class="sc">
+        <div class="stitle"><span class="de">Option wählen:</span><span class="en">Pick option:</span></div>
+        <div class="opts">
+          <button class="obtn" onclick="sel(this,'t4b')">
+            <div class="otag">Ceresio 7</div>
+            <div class="otitle"><span class="de">Ceresio 7 Pool Rooftop</span><span class="en">Ceresio 7 Pool Rooftop</span></div>
+            <div class="odesc"><span class="de">360° Skyline-Blick. Reservierung!</span><span class="en">360° skyline view. Reservation!</span></div>
+            <div class="olinks">
+              <a class="lb bk" href="https://www.ceresio7.com/en/milano/" target="_blank" onclick="ev(event)"><span class="de">Reservieren</span><span class="en">Reserve</span></a>
+              <a class="vote-btn" href="#" onclick="return vote(event,'Tag 4 Nachmittag','Ceresio 7 Pool Rooftop')"><svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.18 3.03 14.69 2 12.04 2"/></svg><span class="de">Abstimmen</span><span class="en">Vote</span></a>
+            </div>
+          </button>
+          <button class="obtn" onclick="sel(this,'t4b')">
+            <div class="otag">Fondazione Prada</div>
+            <div class="otitle">Fondazione Prada</div>
+            <div class="odesc"><span class="de">Kunst &amp; Architektur</span><span class="en">Art &amp; architecture</span></div>
+            <div class="olinks">
+              <a class="lb" href="https://www.fondazioneprada.org/" target="_blank" onclick="ev(event)">Web</a>
+              <a class="vote-btn" href="#" onclick="return vote(event,'Tag 4 Nachmittag','Fondazione Prada')"><svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.18 3.03 14.69 2 12.04 2"/></svg><span class="de">Abstimmen</span><span class="en">Vote</span></a>
+            </div>
+          </button>
+          <button class="obtn" onclick="sel(this,'t4b')">
+            <div class="otag">Option C</div>
+            <div class="otitle"><span class="de">Hotel — Entspannen</span><span class="en">Hotel — Relax</span></div>
+            <div class="odesc"><span class="de">Pause vor Konzert</span><span class="en">Rest before concert</span></div>
+            <div class="olinks">
+              <a class="vote-btn" href="#" onclick="return vote(event,'Tag 4 Nachmittag','Option C - Hotel')"><svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.18 3.03 14.69 2 12.04 2"/></svg><span class="de">Abstimmen</span><span class="en">Vote</span></a>
+            </div>
+          </button>
         </div>
       </div>
-    </div>
-    <div class="slot">
-      <div class="slot-time">19:00</div>
-      <div class="slot-body">
-        <div class="slot-name">SYSTEM OF A DOWN — Ippodromo SNAI La Maura</div>
-        <div class="slot-note">Gleiche Location wie Foo Fighters. Metro M1 → Uruguay → zu Fuß</div>
-        <div class="badges"><span class="badge b-red">90 Min. früher abfahren!</span></div>
-        <div class="links">
-          <a class="link-btn" href="https://www.ticketone.it/" target="_blank">Tickets</a>
-          <a class="link-btn maps" href="https://maps.google.com/?cid=16175990574831006571" target="_blank">Maps</a>
-        </div>
-      </div>
-    </div>
-    <div class="slot">
-      <div class="slot-time">23:30</div>
-      <div class="slot-body">
-        <div class="slot-name">Gattopardo Milano — Club in alter Kirche</div>
-        <div class="slot-note">Kronleuchter, Pop &amp; House. Di–Sa ab 23:30 bis 05 Uhr. So möglicherweise geschlossen!</div>
-        <div class="badges"><span class="badge b-pink">Club</span><span class="badge b-amber">So-Öffnung prüfen!</span></div>
-        <div class="links">
-          <a class="link-btn" href="http://www.ilgattopardomilano.com/" target="_blank">Website</a>
-          <a class="link-btn maps" href="https://maps.google.com/?cid=9777570849613499470" target="_blank">Maps</a>
-        </div>
-      </div>
-    </div>
+    </div></div>
+
+    <div class="slot"><div class="sr"><div class="st">19:00</div><div class="sc">
+      <div class="stitle">SYSTEM OF A DOWN — Ippodromo SNAI La Maura</div>
+      <div class="snote"><span class="de">Gleiche Location. Metro M1 → Uruguay</span><span class="en">Same venue. Metro M1 → Uruguay</span></div>
+      <div class="badges"><span class="b br"><span class="de">90 Min. früher!</span><span class="en">Leave 90 min early!</span></span></div>
+      <div class="links"><a class="lb bk" href="https://www.ticketone.it/" target="_blank">Tickets</a><a class="lb m" href="https://maps.google.com/?cid=16175990574831006571" target="_blank">Maps</a></div>
+    </div></div></div>
+
   </div>
 </div>
 
 <!-- TAG 5 -->
 <div class="day" id="d5">
-  <div class="day-header" onclick="tog('d5')">
-    <div class="day-num n5">5</div>
-    <div class="day-meta">
-      <div class="day-name">Navigli &amp; Grosse Clubnacht</div>
-      <div class="day-date">Montag, 07. Juli</div>
+  <div class="day-hd" onclick="tog('d5')">
+    <div class="dnum n5">5</div>
+    <div class="dmeta">
+      <div class="dname"><span class="de">Freier Tag &amp; Navigli Nacht</span><span class="en">Flex Day &amp; Navigli Night</span></div>
+      <div class="dsub"><span class="de">Montag, 07. Juli</span><span class="en">Monday, 07 July</span></div>
     </div>
-    <div class="chevron"><svg viewBox="0 0 12 12"><polyline points="4,2 8,6 4,10"/></svg></div>
+    <div class="chev"><svg viewBox="0 0 12 12"><polyline points="4,2 8,6 4,10"/></svg></div>
   </div>
-  <div class="slots">
-    <div class="slot">
-      <div class="slot-time">Morgens</div>
-      <div class="slot-body">
-        <div class="slot-name">Shopping / Café / offene Punkte</div>
-        <div class="slot-note">Letzter freier Vormittag für eigene Wünsche</div>
+  <div class="day-body">
+
+    <div class="slot"><div class="sr">
+      <div class="st"><span class="de">Mittag</span><span class="en">Lunch</span></div>
+      <div class="sc">
+        <div class="stitle">Mercato Centrale Milano</div>
+        <div class="snote"><span class="de">Markthalle. Mo–So 06:30–23</span><span class="en">Market hall. Daily 6:30am–11pm</span></div>
+        <div class="links"><a class="lb" href="https://www.mercatocentrale.it/milano/" target="_blank">Web</a><a class="lb m" href="https://maps.google.com/?q=Mercato+Centrale+Milano" target="_blank">Maps</a></div>
       </div>
-    </div>
-    <div class="slot">
-      <div class="slot-time">19:00</div>
-      <div class="slot-body">
-        <div class="slot-name">Mag Café — Navigli am Kanal</div>
-        <div class="slot-note">Beste Cocktailbar am Kanal, kreative Drinks + gratis Snacks. Mo–So ab 08 Uhr</div>
-        <div class="links">
-          <a class="link-btn" href="https://www.farmilygroup.com/" target="_blank">Website</a>
-          <a class="link-btn maps" href="https://maps.google.com/?cid=1854808282304548101" target="_blank">Maps</a>
+    </div></div>
+
+    <div class="slot"><div class="sr">
+      <div class="st"><span class="de">Nachmittag</span><span class="en">Afternoon</span></div>
+      <div class="sc">
+        <div class="stitle"><span class="de">Option wählen:</span><span class="en">Pick option:</span></div>
+        <div class="opts">
+          <button class="obtn" onclick="sel(this,'t5b')">
+            <div class="otag">Abendmahl ❌ Mo zu</div>
+            <div class="otitle"><span class="de">Cenacolo Vinciano</span><span class="en">Cenacolo Vinciano</span></div>
+            <div class="odesc"><span class="de">Mo geschlossen! Di–So</span><span class="en">Mon closed! Tue–Sun</span></div>
+            <div class="olinks">
+              <a class="lb bk" href="https://cenacolovinciano.vivaticket.it/" target="_blank" onclick="ev(event)">Tickets</a>
+              <a class="vote-btn" href="#" onclick="return vote(event,'Tag 5 Nachmittag','Letztes Abendmahl (an anderem Tag)')"><svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.18 3.03 14.69 2 12.04 2"/></svg><span class="de">Abstimmen</span><span class="en">Vote</span></a>
+            </div>
+          </button>
+          <button class="obtn" onclick="sel(this,'t5b')">
+            <div class="otag">Hop-on Bus</div>
+            <div class="otitle">Hop-on Hop-off Bus</div>
+            <div class="odesc"><span class="de">Stadtrundfahrt</span><span class="en">City tour</span></div>
+            <div class="olinks">
+              <a class="lb" href="https://www.hop-on-hop-off-bus.com/milan/" target="_blank" onclick="ev(event)">Tickets</a>
+              <a class="vote-btn" href="#" onclick="return vote(event,'Tag 5 Nachmittag','Hop-on Bus')"><svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.18 3.03 14.69 2 12.04 2"/></svg><span class="de">Abstimmen</span><span class="en">Vote</span></a>
+            </div>
+          </button>
+          <button class="obtn" onclick="sel(this,'t5b')">
+            <div class="otag">Option C</div>
+            <div class="otitle"><span class="de">Hotel — Entspannen</span><span class="en">Hotel — Relax</span></div>
+            <div class="odesc"><span class="de">Energie für die letzte Nacht</span><span class="en">Save energy for last night</span></div>
+            <div class="olinks">
+              <a class="vote-btn" href="#" onclick="return vote(event,'Tag 5 Nachmittag','Option C - Hotel')"><svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.18 3.03 14.69 2 12.04 2"/></svg><span class="de">Abstimmen</span><span class="en">Vote</span></a>
+            </div>
+          </button>
         </div>
       </div>
-    </div>
-    <div class="slot">
-      <div class="slot-time">20:00</div>
-      <div class="slot-body">
-        <div class="slot-name">Rita Cocktails — Navigli</div>
-        <div class="slot-note">5 Min. zu Fuß vom Mag. Rating 4.6★ — eine der besten Cocktailbars Mailands!</div>
-        <div class="links">
-          <a class="link-btn" href="https://www.ritacocktails.com/" target="_blank">Website</a>
-          <a class="link-btn maps" href="https://maps.google.com/?cid=12547980557457411071" target="_blank">Maps</a>
+    </div></div>
+
+    <div class="slot"><div class="sr">
+      <div class="st">Ab 19:00</div>
+      <div class="sc">
+        <div class="stitle">Navigli — Mag Café &amp; Rita</div>
+        <div class="snote"><span class="de">Beide direkt nebeneinander am Kanal!</span><span class="en">Both right next to each other on the canal!</span></div>
+        <div class="links"><a class="lb" href="https://www.farmilygroup.com/" target="_blank">Mag</a><a class="lb" href="https://www.ritacocktails.com/" target="_blank">Rita</a><a class="lb m" href="https://maps.google.com/?cid=1854808282304548101" target="_blank">Maps</a></div>
+      </div>
+    </div></div>
+
+    <div class="slot"><div class="sr">
+      <div class="st">Ab 21:00</div>
+      <div class="sc">
+        <div class="stitle"><span class="de">Später Abend — abstimmen:</span><span class="en">Late night — vote:</span></div>
+        <div class="opts">
+          <button class="obtn" onclick="sel(this,'t5c')">
+            <div class="otag">Backdoor 43</div>
+            <div class="otitle"><span class="de">Weltkleinste Speakeasy</span><span class="en">World's smallest speakeasy</span></div>
+            <div class="odesc"><span class="de">Max. 3 Pers. 15€ Deposit</span><span class="en">Max 3 people. €15 deposit</span></div>
+            <div class="olinks">
+              <a class="lb bk" href="https://backdoor43.superbexperience.com/" target="_blank" onclick="ev(event)"><span class="de">Reservieren</span><span class="en">Reserve</span></a>
+              <a class="vote-btn" href="#" onclick="return vote(event,'Tag 5 Abend','Backdoor 43 Speakeasy')"><svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.18 3.03 14.69 2 12.04 2"/></svg><span class="de">Abstimmen</span><span class="en">Vote</span></a>
+            </div>
+          </button>
+          <button class="obtn" onclick="sel(this,'t5c')">
+            <div class="otag">Fabrique</div>
+            <div class="otitle"><span class="de">Fabrique Club — Elektronik</span><span class="en">Fabrique Club — Electronic</span></div>
+            <div class="odesc"><span class="de">3.000 Personen. Uber 15 Min.</span><span class="en">3,000 people. Uber 15 min</span></div>
+            <div class="olinks">
+              <a class="lb bk" href="http://www.fabriquemilano.it/" target="_blank" onclick="ev(event)">Tickets</a>
+              <a class="vote-btn" href="#" onclick="return vote(event,'Tag 5 Abend','Fabrique Club')"><svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.18 3.03 14.69 2 12.04 2"/></svg><span class="de">Abstimmen</span><span class="en">Vote</span></a>
+            </div>
+          </button>
+          <button class="obtn" onclick="sel(this,'t5c')">
+            <div class="otag">Navigli</div>
+            <div class="otitle"><span class="de">Weiter am Navigli</span><span class="en">Stay at Navigli</span></div>
+            <div class="odesc"><span class="de">Bars bis spät</span><span class="en">Bars until late</span></div>
+            <div class="olinks">
+              <a class="vote-btn" href="#" onclick="return vote(event,'Tag 5 Abend','Weiter am Navigli')"><svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.18 3.03 14.69 2 12.04 2"/></svg><span class="de">Abstimmen</span><span class="en">Vote</span></a>
+            </div>
+          </button>
         </div>
       </div>
-    </div>
-    <div class="slot">
-      <div class="slot-time">21:00</div>
-      <div class="slot-body">
-        <div class="slot-name">Backdoor 43 — Weltkleinste Speakeasy-Bar</div>
-        <div class="slot-note">Private 1h-Session mit eigenem Bartender. Maximal 3 Personen pro Slot! 15€ Deposit bei Buchung.</div>
-        <div class="badges"><span class="badge b-red">Reservierung Pflicht! Max 3 Pers.</span></div>
-        <div class="links">
-          <a class="link-btn book" href="https://backdoor43.superbexperience.com/" target="_blank">Jetzt reservieren</a>
-          <a class="link-btn maps" href="https://maps.google.com/?cid=4341860727828896912" target="_blank">Maps</a>
-        </div>
-      </div>
-    </div>
-    <div class="slot">
-      <div class="slot-time">22:30</div>
-      <div class="slot-body">
-        <div class="slot-name">Fabrique Club</div>
-        <div class="slot-note">Mailands grösster Elektronik-Club in alter Fabrik. Bis 3.000 Personen. Mit Uber/Taxi ~15 Min.</div>
-        <div class="badges"><span class="badge b-red">Tickets online vorab kaufen!</span><span class="badge b-pink">Club</span></div>
-        <div class="links">
-          <a class="link-btn book" href="http://www.fabriquemilano.it/" target="_blank">Tickets &amp; Info</a>
-          <a class="link-btn maps" href="https://maps.google.com/?cid=9304245859788607774" target="_blank">Maps</a>
-        </div>
-      </div>
-    </div>
+    </div></div>
+
   </div>
 </div>
 
 <!-- TAG 6 -->
 <div class="day" id="d6">
-  <div class="day-header" onclick="tog('d6')">
-    <div class="day-num n6">6</div>
-    <div class="day-meta">
-      <div class="day-name">Abreise — Abflug 14:55</div>
-      <div class="day-date">Dienstag, 08. Juli</div>
+  <div class="day-hd" onclick="tog('d6')">
+    <div class="dnum n6">6</div>
+    <div class="dmeta">
+      <div class="dname"><span class="de">Abreise — Abflug 14:55</span><span class="en">Departure — Flight 14:55</span></div>
+      <div class="dsub"><span class="de">Dienstag, 08. Juli</span><span class="en">Tuesday, 08 July</span></div>
     </div>
-    <div class="chevron"><svg viewBox="0 0 12 12"><polyline points="4,2 8,6 4,10"/></svg></div>
+    <div class="chev"><svg viewBox="0 0 12 12"><polyline points="4,2 8,6 4,10"/></svg></div>
   </div>
-  <div class="slots">
-    <div class="slot">
-      <div class="slot-time">Morgens</div>
-      <div class="slot-body">
-        <div class="slot-name">Letzter Kaffee &amp; Spaziergang</div>
-        <div class="slot-note">Check-out erledigen. Gepäck aufgeben falls möglich.</div>
+  <div class="day-body">
+
+    <div class="slot"><div class="sr">
+      <div class="st"><span class="de">Morgens</span><span class="en">Morning</span></div>
+      <div class="sc">
+        <div class="stitle"><span class="de">Letzter Kaffee &amp; Spaziergang</span><span class="en">Last coffee &amp; stroll</span></div>
+        <div class="snote"><span class="de">Check-out erledigen</span><span class="en">Check out</span></div>
       </div>
-    </div>
-    <div class="slot">
-      <div class="slot-time">12:30</div>
-      <div class="slot-body">
-        <div class="slot-name">Aufbruch zum Flughafen</div>
-        <div class="slot-note">Malpensa: ca. 50 Min. mit Malpensa Express. Linate: ca. 30 Min. Spätestens 12:30 abfahren!</div>
-        <div class="badges"><span class="badge b-red">Spätestens 12:30 abfahren!</span></div>
+    </div></div>
+
+    <div class="slot"><div class="sr">
+      <div class="st"><span class="de">Mittag</span><span class="en">Lunch</span></div>
+      <div class="sc">
+        <div class="stitle">Pavé Milano</div>
+        <div class="snote"><span class="de">Berühmte Bäckerei &amp; Café</span><span class="en">Famous bakery &amp; café</span></div>
+        <div class="links"><a class="lb m" href="https://maps.google.com/?q=Pavé+Milano" target="_blank">Maps</a></div>
       </div>
-    </div>
+    </div></div>
+
+    <div class="slot"><div class="sr">
+      <div class="st">12:30</div>
+      <div class="sc">
+        <div class="stitle"><span class="de">Aufbruch zum Flughafen</span><span class="en">Head to airport</span></div>
+        <div class="snote"><span class="de">Malpensa: ~50 Min. Linate: ~30 Min.</span><span class="en">Malpensa: ~50 min. Linate: ~30 min.</span></div>
+        <div class="badges"><span class="b br"><span class="de">Spätestens 12:30 abfahren!</span><span class="en">Leave no later than 12:30!</span></span></div>
+      </div>
+    </div></div>
+
   </div>
 </div>
 
-<div class="section-label">Sofort zu buchen</div>
-
-<div class="book-section">
-  <a class="book-row" href="https://www.duomomilano.it/en/" target="_blank">
-    <div class="book-dot"></div>
-    <div class="book-info"><strong>Duomo Tickets (Tag 2)</strong><span>Wird schnell ausgebucht — jetzt buchen!</span></div>
-    <div class="book-arr">›</div>
+<!-- BUCHUNGSLISTE -->
+<div class="sec-label"><span class="de">Sofort zu buchen</span><span class="en">Book immediately</span></div>
+<div class="bsec">
+  <a class="brow" href="https://www.duomomilano.it/en/" target="_blank">
+    <div class="bdot"></div><div class="binfo"><strong>Duomo — <span class="de">Tag</span><span class="en">Day</span> 2</strong><span><span class="de">Schnell ausgebucht!</span><span class="en">Sells out fast!</span></span></div><div class="barr">›</div>
   </a>
-  <a class="book-row" href="https://www.ceresio7.com/en/milano/" target="_blank">
-    <div class="book-dot"></div>
-    <div class="book-info"><strong>Ceresio 7 Reservierung (Tag 4)</strong><span>Pool-Rooftop — sehr beliebt im Sommer</span></div>
-    <div class="book-arr">›</div>
+  <a class="brow" href="https://cenacolovinciano.vivaticket.it/" target="_blank">
+    <div class="bdot"></div><div class="binfo"><strong><span class="de">Letztes Abendmahl</span><span class="en">Last Supper</span></strong><span><span class="de">Sehr schwer, Di–So!</span><span class="en">Very hard, Tue–Sun!</span></span></div><div class="barr">›</div>
   </a>
-  <a class="book-row" href="https://backdoor43.superbexperience.com/" target="_blank">
-    <div class="book-dot"></div>
-    <div class="book-info"><strong>Backdoor 43 — Speakeasy (Tag 5)</strong><span>Max 3 Pers. pro Session, 15€ Deposit</span></div>
-    <div class="book-arr">›</div>
+  <a class="brow" href="https://www.ceresio7.com/en/milano/" target="_blank">
+    <div class="bdot"></div><div class="binfo"><strong>Ceresio 7</strong><span><span class="de">Reservierung</span><span class="en">Reservation</span></span></div><div class="barr">›</div>
   </a>
-  <a class="book-row" href="http://www.fabriquemilano.it/" target="_blank">
-    <div class="book-dot"></div>
-    <div class="book-info"><strong>Fabrique Club Tickets (Tag 5)</strong><span>Online vorab günstiger als an der Kasse</span></div>
-    <div class="book-arr">›</div>
+  <a class="brow" href="https://backdoor43.superbexperience.com/" target="_blank">
+    <div class="bdot"></div><div class="binfo"><strong>Backdoor 43</strong><span>Max 3, €15 Deposit</span></div><div class="barr">›</div>
   </a>
-  <a class="book-row" href="https://www.serendibmilano.com/" target="_blank">
-    <div class="book-dot"></div>
-    <div class="book-info"><strong>Serendib Restaurant (Tag 2)</strong><span>Gruppe von 5 — unbedingt reservieren!</span></div>
-    <div class="book-arr">›</div>
+  <a class="brow" href="http://www.fabriquemilano.it/" target="_blank">
+    <div class="bdot"></div><div class="binfo"><strong>Fabrique Club</strong><span><span class="de">Online günstiger</span><span class="en">Cheaper online</span></span></div><div class="barr">›</div>
+  </a>
+  <a class="brow" href="https://www.serendibmilano.com/" target="_blank">
+    <div class="bdot"></div><div class="binfo"><strong>Serendib</strong><span><span class="de">Für 5 reservieren!</span><span class="en">Reserve for 5!</span></span></div><div class="barr">›</div>
   </a>
 </div>
 
-<footer>Milano Juli 2025 &nbsp;·&nbsp; Viel Spass!</footer>
+<footer>Milano Juli 2025 · <span class="de">Viel Spass!</span><span class="en">Have fun!</span></footer>
 
 <script>
-function tog(id) {
-  var el = document.getElementById(id);
-  el.classList.toggle('open');
+var WA_NUMBER = '4367688110583';
+
+function tog(id){document.getElementById(id).classList.toggle('open')}
+function sel(btn,g){
+  var p=btn.closest('.day-body');
+  p.querySelectorAll('[onclick*="\''+g+'\'"]').forEach(function(b){b.classList.remove('sel')});
+  btn.classList.add('sel');
+}
+function ev(e){e.stopPropagation()}
+
+function vote(e, slot, option){
+  e.preventDefault();
+  e.stopPropagation();
+  var isEn = document.body.classList.contains('en-mode');
+  var name = prompt(isEn ? 'Your name:' : 'Dein Name:');
+  if(!name) return false;
+  var msg;
+  if(isEn){
+    msg = '🗳️ MILANO VOTE\n\nFrom: ' + name + '\nSlot: ' + slot + '\nVote: ' + option;
+  } else {
+    msg = '🗳️ MAILAND ABSTIMMUNG\n\nVon: ' + name + '\nZeitslot: ' + slot + '\nStimme für: ' + option;
+  }
+  var url = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(msg);
+  window.open(url, '_blank');
+  return false;
+}
+
+function wa(type){
+  var isEn = document.body.classList.contains('en-mode');
+  var name = prompt(isEn ? 'Your name:' : 'Dein Name:');
+  if(!name) return false;
+  var content = prompt(isEn ? 'Your message:' : 'Deine Nachricht:');
+  if(!content) return false;
+  var prefix;
+  if(type === 'idea'){
+    prefix = isEn ? '💡 IMPROVEMENT IDEA' : '💡 VERBESSERUNGSVORSCHLAG';
+  } else if(type === 'question'){
+    prefix = isEn ? '❓ QUESTION' : '❓ FRAGE';
+  } else {
+    prefix = isEn ? '🔄 CHANGE REQUEST' : '🔄 ÄNDERUNGSVORSCHLAG';
+  }
+  var label = isEn ? 'From' : 'Von';
+  var msg = prefix + '\n\n' + label + ': ' + name + '\n\n' + content;
+  var url = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(msg);
+  window.open(url, '_blank');
+  return false;
+}
+
+function setLang(lang){
+  var body=document.body;
+  var btnDe=document.getElementById('btn-de');
+  var btnEn=document.getElementById('btn-en');
+  if(lang==='en'){
+    body.classList.add('en-mode');
+    btnDe.classList.remove('active');
+    btnEn.classList.add('active');
+    document.documentElement.lang='en';
+  } else {
+    body.classList.remove('en-mode');
+    btnDe.classList.add('active');
+    btnEn.classList.remove('active');
+    document.documentElement.lang='de';
+  }
 }
 </script>
 </body>
